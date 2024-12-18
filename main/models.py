@@ -1,38 +1,70 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
+from datetime import datetime
 
 # Create your models here.
-class User(models.Model):
-    username = models.CharField(max_length=255)
+class User(AbstractUser):
+    username = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255) # если что тут будет храниться хэш, а не сам пароль
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
     age = models.IntegerField()
-    avatar = models.BinaryField()
+    avatar = models.ImageField()
+
+    groups = models.ManyToManyField(
+        "auth.Group",
+        related_name="custom_user_groups",
+        blank=True,
+        help_text="The groups this user belongs to.",
+        verbose_name="groups",
+    )
+    user_permissions = models.ManyToManyField(
+        "auth.Permission",
+        related_name="custom_user_permissions",
+        blank=True,
+        help_text="Specific permissions for this user.",
+        verbose_name="user permissions",
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Post(models.Model):
     text = models.TextField(max_length=20000)
-    author_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-class Voting_variant(models.Model):
+class VotingVariant(models.Model):
     text = models.CharField(max_length=300)
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='variants')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='variants')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Vote(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='votes')
-    variant_id = models.ForeignKey(Voting_variant, on_delete=models.CASCADE, related_name='votes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='votes')
+    variant = models.ForeignKey(VotingVariant, on_delete=models.CASCADE, related_name='votes')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Comment(models.Model):
     text = models.TextField(max_length=10000)
-    author_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='comments')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-class Complaint_about_post(models.Model):
+class ComplaintAboutPost(models.Model):
     text = models.TextField(max_length=10000)
-    author_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaint_about_posts')
-    post_id = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='complaints_about_this_post')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaint_about_posts')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='complaints_about_this_post')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-class Complaint_about_comment(models.Model):
+class ComplaintAboutComment(models.Model):
     text = models.TextField(max_length=10000)
-    author_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaint_about_comments')
-    comment_id = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='complaints_about_this_comment')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='complaint_about_comments')
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='complaints_about_this_comment')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
