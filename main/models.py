@@ -68,3 +68,8 @@ class ComplaintAboutComment(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name='complaints_about_this_comment')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+class Reaction(models.Model):
+    is_like = models.BooleanField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reactions')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='reactions')
