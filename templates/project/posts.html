@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleVotes - Posts</title>
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/components/header.css">
+    <link rel="stylesheet" href="css/components/buttons.css">
+    <link rel="stylesheet" href="css/components/layout.css">
+    <link rel="stylesheet" href="css/components/footer.css">
+    <link rel="stylesheet" href="css/components/posts/sidebar.css">
+    <link rel="stylesheet" href="css/components/posts/feed.css">
+    <link rel="stylesheet" href="css/components/posts/voting-card.css">
+    <link rel="stylesheet" href="css/pages/posts.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>SimpleVotes</h1>
+            <div class="search-container">
+                <input type="text" placeholder="Search votings..." class="search-input">
+            </div>
+            <button class="profile-btn">Profile</button>
+        </div>
+    </header>
+
+    <main class="posts-layout">
+        <aside class="left-sidebar">
+            <h2>Voting Themes</h2>
+            <div class="theme-filters">
+                <label class="theme-checkbox">
+                    <input type="checkbox" checked> Politics
+                </label>
+                <label class="theme-checkbox">
+                    <input type="checkbox" checked> Technology
+                </label>
+                <label class="theme-checkbox">
+                    <input type="checkbox" checked> Sports
+                </label>
+                <label class="theme-checkbox">
+                    <input type="checkbox" checked> Entertainment
+                </label>
+            </div>
+        </aside>
+
+        <section class="voting-feed">
+            <div class="voting-card">
+                <div class="voting-content">
+                    <p class="creator">@john_doe</p>
+                    <h3 class="question">What's your favorite programming language?</h3>
+                    <div class="options">
+                        <button class="option-btn">JavaScript</button>
+                        <button class="option-btn">Python</button>
+                        <button class="option-btn">Java</button>
+                        <button class="option-btn">C++</button>
+                    </div>
+                    <div class="voting-actions">
+                        <button class="comment-btn">
+                            <i class="fas fa-comment"></i>
+                        </button>
+                        <div class="vote-buttons">
+                            <button class="like-btn">
+                                <i class="fas fa-thumbs-up"></i>
+                                <span>42</span>
+                            </button>
+                            <button class="dislike-btn">
+                                <i class="fas fa-thumbs-down"></i>
+                                <span>5</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- More voting cards can be added here -->
+        </section>
+
+        <aside class="right-sidebar">
+            <button class="sidebar-btn">My Votings</button>
+            <button class="sidebar-btn">My Answers</button>
+            <button class="sidebar-btn">Liked Votings</button>
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 SimpleVotes. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="js/pages/posts.js"></script>
+</body>
+</html>
