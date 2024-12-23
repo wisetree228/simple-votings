@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+    .footer {
+    background-color: #111;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+    border-top: 1px solid #333;
+    }
+
+    .header {
+    background-color: #111;
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+    }
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-left: 1rem;
+}
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.button-container {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+}
+
+.action-btn {
+    background-color: #000000;
+    color: white;
+    border: 2px solid white;
+    padding: 1.2rem 2.5rem;  /* Increased padding for bigger buttons */
+    font-size: 1.4rem;      /* Increased font size */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 250px;           /* Increased width */
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    background-color: #1a1a1a;  /* Slightly lighter black on hover */
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    color: white;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    color: white;
+}
+
+.header {
+    background-color: #111;
+    padding: 1rem;
+    border-bottom: 1px solid #333;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+
+.header-content h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding-left: 1rem;
+}
+
+.profile-btn {
+    background-color: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.button-container {
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+}
+
+.action-btn {
+    background-color: #000000;
+    color: white;
+    border: 2px solid white;
+    padding: 1.2rem 2.5rem;
+    font-size: 1.4rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    width: 250px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+    background-color: #1a1a1a;
+}
+
+.footer {
+    background-color: #111;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+    border-top: 1px solid #333;
+}
+</style>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Here you would typically send the data to your server
+    console.log('Login data:', { email });
+    window.location.href = '/posts.html';
+});
+export function setupButtonHandlers() {
+    const buttons = {
+        profile: document.getElementById('profileBtn'),
+        register: document.getElementById('registerBtn'),
+        login: document.getElementById('loginBtn')
+    };
+
+    buttons.profile.addEventListener('click', () => {
+        alert('Profile button clicked');
+    });
+
+    buttons.register.addEventListener('click', () => {
+        alert('Registration button clicked');
+    });
+
+    buttons.login.addEventListener('click', () => {
+        alert('Authorization button clicked');
+    });
+}
+import { setupButtonHandlers } from './buttons.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupButtonHandlers();
+});
+import { initializeButtons } from './modules/buttons.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeButtons();
+});
+</script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleVotes - Login</title>
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/components/header.css">
+    <link rel="stylesheet" href="css/components/buttons.css">
+    <link rel="stylesheet" href="css/components/layout.css">
+    <link rel="stylesheet" href="css/components/footer.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>SimpleVotes</h1>
+        </div>
+    </header>
+
+    <main class="main">
+        <form id="loginForm" class="login-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit" class="action-btn">Log In</button>
+        </form>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2024 SimpleVotes. All rights reserved.</p>
+    </footer>
+
+    <script type="module" src="js/login.js"></script>
+</body>
+</html>
