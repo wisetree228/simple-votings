@@ -1,404 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<style>
-         .footer {
-    background-color: #111;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    margin-top: auto;
-    border-top: 1px solid #333;
-    }
-
-    .header {
-    background-color: #111;
-    padding: 1rem;
-    border-bottom: 1px solid #333;
-    }
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-}
-
-.header-content h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding-left: 1rem;
-}
-.main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-}
-
-.button-container {
-    display: flex;
-    gap: 2rem;
-    flex-direction: column;
-}
-
-.action-btn {
-    background-color: #000000;
-    color: white;
-    border: 2px solid white;
-    padding: 1.2rem 2.5rem;  /* Increased padding for bigger buttons */
-    font-size: 1.4rem;      /* Increased font size */
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    width: 250px;           /* Increased width */
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-    background-color: #1a1a1a;  /* Slightly lighter black on hover */
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: black;
-    color: white;
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: black;
-    color: white;
-}
-
-.header {
-    background-color: #111;
-    padding: 1rem;
-    border-bottom: 1px solid #333;
-}
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-}
-
-.header-content h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: bold;
-    padding-left: 1rem;
-}
-
-.profile-btn {
-    background-color: transparent;
-    border: 2px solid white;
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-left: auto;
-    margin-right: 1rem;
-}
-
-.profile-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.main {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-}
-
-.button-container {
-    display: flex;
-    gap: 2rem;
-    flex-direction: column;
-}
-
-.action-btn {
-    background-color: #000000;
-    color: white;
-    border: 2px solid white;
-    padding: 1.2rem 2.5rem;
-    font-size: 1.4rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    width: 250px;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.action-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
-    background-color: #1a1a1a;
-}
-
-.footer {
-    background-color: #111;
-    color: white;
-    text-align: center;
-    padding: 1rem;
-    margin-top: auto;
-    border-top: 1px solid #333;
-}
-</style>
-<script>
-    import { initializeButtons } from './modules/buttons.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-    initializeButtons();
-});
-export function setupButtonHandlers() {
-    const buttons = {
-        profile: document.getElementById('profileBtn'),
-        register: document.getElementById('registerBtn'),
-        login: document.getElementById('loginBtn')
-    };
-
-    buttons.profile.addEventListener('click', () => {
-        alert('Profile button clicked');
-    });
-
-    buttons.register.addEventListener('click', () => {
-        alert('Registration button clicked');
-    });
-
-    buttons.login.addEventListener('click', () => {
-        alert('Authorization button clicked');
-    });
-}
-import { setupButtonHandlers } from './buttons.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-    setupButtonHandlers();
-});
-export function setupSidebarActions() {
-    const sidebarButtons = document.querySelectorAll('.sidebar-btn');
-    
-    sidebarButtons.forEach(button => {
-        button.addEventListener('click', handleSidebarAction);
-    });
-}
-
-function handleSidebarAction(e) {
-    const action = e.target.textContent;
-    console.log(`${action} clicked`);
-    // Implement sidebar action logic here
-}
-export function setupThemeFilters() {
-    const themeCheckboxes = document.querySelectorAll('.theme-checkbox input');
-    
-    themeCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', handleThemeFilter);
-    });
-}
-
-function handleThemeFilter(e) {
-    const theme = e.target.parentElement.textContent.trim();
-    const isChecked = e.target.checked;
-    
-    console.log(`${theme} filter ${isChecked ? 'enabled' : 'disabled'}`);
-    // Implement filtering logic here
-}
-export function setupVotingActions() {
-    const votingCards = document.querySelectorAll('.voting-card');
-
-    votingCards.forEach(card => {
-        const likeBtn = card.querySelector('.like-btn');
-        const dislikeBtn = card.querySelector('.dislike-btn');
-        const commentBtn = card.querySelector('.comment-btn');
-        const options = card.querySelectorAll('.option-btn');
-
-        likeBtn?.addEventListener('click', handleLike);
-        dislikeBtn?.addEventListener('click', handleDislike);
-        commentBtn?.addEventListener('click', handleComment);
-        options.forEach(option => {
-            option.addEventListener('click', handleVote);
-        });
-    });
-}
-
-function handleLike(e) {
-    const count = e.currentTarget.querySelector('span');
-    if (count) {
-        let likes = parseInt(count.textContent);
-        count.textContent = likes + 1;
-    }
-}
-
-function handleDislike(e) {
-    const count = e.currentTarget.querySelector('span');
-    if (count) {
-        let dislikes = parseInt(count.textContent);
-        count.textContent = dislikes + 1;
-    }
-}
-
-function handleComment() {
-    // Implement comment functionality
-    console.log('Comment clicked');
-}
-export function initializeButtons() {
-    const buttons = {
-        profile: document.getElementById('profileBtn'),
-        register: document.getElementById('registerBtn'),
-        login: document.getElementById('loginBtn')
-    };
-
-    setupButtonHandlers(buttons);
-}
-
-function setupButtonHandlers(buttons) {
-    buttons.profile.addEventListener('click', handleProfileClick);
-    buttons.register.addEventListener('click', handleRegisterClick);
-    buttons.login.addEventListener('click', handleLoginClick);
-}
-
-function handleProfileClick() {
-    alert('Profile button clicked');
-}
-
-function handleRegisterClick() {
-    window.location.href = '/register.html';
-}
-
-function handleLoginClick() {
-    window.location.href = '/login.html';
-}
-function handleVote(e) {
-    const option = e.currentTarget;
-    const options = option.closest('.options').querySelectorAll('.option-btn');
-    
-    options.forEach(opt => opt.style.borderColor = '#444');
-    option.style.borderColor = '#4CAF50';
-}
-import { setupVotingActions } from '../components/voting-actions.js';
-import { setupThemeFilters } from '../components/theme-filters.js';
-import { setupSidebarActions } from '../components/sidebar-actions.js';
-
-document.addEventListener('DOMContentLoaded', () => {
-    setupVotingActions();
-    setupThemeFilters();
-    setupSidebarActions();
-});
-</script>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimpleVotes - Posts</title>
-    <link rel="stylesheet" href="css/base/reset.css">
-    <link rel="stylesheet" href="css/components/header.css">
-    <link rel="stylesheet" href="css/components/buttons.css">
-    <link rel="stylesheet" href="css/components/layout.css">
-    <link rel="stylesheet" href="css/components/footer.css">
-    <link rel="stylesheet" href="css/components/posts/sidebar.css">
-    <link rel="stylesheet" href="css/components/posts/feed.css">
-    <link rel="stylesheet" href="css/components/posts/voting-card.css">
-    <link rel="stylesheet" href="css/pages/posts.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="posts.css">
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <h1>SimpleVotes</h1>
-            <div class="search-container">
-                <input type="text" placeholder="Search votings..." class="search-input">
-            </div>
-            <button class="profile-btn">Profile</button>
-        </div>
-    </header>
-
-    <main class="posts-layout">
-        <aside class="left-sidebar">
-            <h2>Voting Themes</h2>
-            <div class="theme-filters">
-                <label class="theme-checkbox">
-                    <input type="checkbox" checked> Politics
-                </label>
-                <label class="theme-checkbox">
-                    <input type="checkbox" checked> Technology
-                </label>
-                <label class="theme-checkbox">
-                    <input type="checkbox" checked> Sports
-                </label>
-                <label class="theme-checkbox">
-                    <input type="checkbox" checked> Entertainment
-                </label>
-            </div>
-        </aside>
-
-        <section class="voting-feed">
-            <div class="voting-card">
-                <div class="voting-content">
-                    <p class="creator">@john_doe</p>
-                    <h3 class="question">What's your favorite programming language?</h3>
-                    <div class="options">
-                        <button class="option-btn">JavaScript</button>
-                        <button class="option-btn">Python</button>
-                        <button class="option-btn">Java</button>
-                        <button class="option-btn">C++</button>
-                    </div>
-                    <div class="voting-actions">
-                        <button class="comment-btn">
-                            <i class="fas fa-comment"></i>
-                        </button>
-                        <div class="vote-buttons">
-                            <button class="like-btn">
-                                <i class="fas fa-thumbs-up"></i>
-                                <span>42</span>
-                            </button>
-                            <button class="dislike-btn">
-                                <i class="fas fa-thumbs-down"></i>
-                                <span>5</span>
-                            </button>
-                        </div>
-                    </div>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo">
+                        <path d="m9 12 2 2 4-4"></path>
+                        <path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path>
+                        <path d="M22 19H2"></path>
+                    </svg>
+                    <span class="header-title">SimpleVotes</span>
+                </div>
+                <div class="header-right">
+                    <button class="profile-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </button>
                 </div>
             </div>
-            <!-- More voting cards can be added here -->
-        </section>
+        </header>
 
-        <aside class="right-sidebar">
-            <button class="sidebar-btn">My Votings</button>
-            <button class="sidebar-btn">My Answers</button>
-            <button class="sidebar-btn">Liked Votings</button>
-        </aside>
-    </main>
+        <main class="posts-layout">
+            <aside class="sidebar">
+                <button class="btn primary create-voting-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14"></path>
+                        <path d="M5 12h14"></path>
+                    </svg>
+                    Create Voting
+                </button>
+                <nav class="sidebar-nav">
+                    <button class="nav-btn active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        All Votings
+                    </button>
+                    <button class="nav-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        My Votings
+                    </button>
+                    <button class="nav-btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                        </svg>
+                        Liked Votings
+                    </button>
+                </nav>
+            </aside>
 
-    <footer class="footer">
-        <p>&copy; 2024 SimpleVotes. All rights reserved.</p>
-    </footer>
+            <div class="main-content">
+                <div class="search-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search votings...">
+                </div>
 
-    <script type="module" src="js/pages/posts.js"></script>
+                <div class="posts-container" id="postsContainer">
+                    <!-- Posts will be dynamically inserted here -->
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; <span id="year"></span> SimpleVotes. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="posts.js"></script>
 </body>
 </html>
