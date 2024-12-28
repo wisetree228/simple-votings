@@ -9,8 +9,7 @@ class User(AbstractUser):
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255)
     email = models.EmailField(max_length=255)
-    age = models.IntegerField()
-    avatar = models.ImageField()
+    avatar = models.ImageField(null=True, blank=True)
 
     groups = models.ManyToManyField(
         "auth.Group",
