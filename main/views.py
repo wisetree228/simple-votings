@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from main.forms import SignInForm
 
 # Create your views here.
-def test_view(request):
+def login(request):
     form = SignInForm()
     context={}
     context['form'] = form
