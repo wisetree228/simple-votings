@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleVotes - Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="forms.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo">
+                    <path d="m9 12 2 2 4-4"></path>
+                    <path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path>
+                    <path d="M22 19H2"></path>
+                </svg>
+                <span class="header-title">SimpleVotes</span>
+            </div>
+        </header>
+
+        <main>
+            <form id="loginForm" class="form-container">
+                <h2>Sign In</h2>
+                
+                <div class="form-group">
+                    <input type="email" id="email" name="email" required>
+                    <label for="email">Email</label>
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="password" name="password" required>
+                    <label for="password">Password</label>
+                </div>
+
+                <button type="submit" class="btn primary">Sign In</button>
+                
+                <p class="form-footer">
+                    Don't have an account? <a href="register.html">Register</a>
+                </p>
+            </form>
+        </main>
+
+        <footer>
+            <p>&copy; <span id="year"></span> SimpleVotes. All rights reserved.</p>
+        </footer>
+    </div>
+    <script src="login.js"></script>
+</body>
+</html>

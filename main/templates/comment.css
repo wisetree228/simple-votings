@@ -1,0 +1,23 @@
+/* Add to existing CSS */
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #fbbf24;
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+}
+
+.back-btn:hover {
+    color: #f59e0b;
+}
+
+.back-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
