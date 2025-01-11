@@ -1,10 +1,384 @@
-<!-- Add this right after the header, inside main -->
-<main class="comment-layout">
-    <button class="back-btn" onclick="goBack()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m12 19-7-7 7-7"></path>
-            <path d="M19 12H5"></path>
-        </svg>
-        Back to Votings
-    </button>
-    <!-- Rest of the content -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleVotes - Comments</title>
+    <style>
+        /* Comments page layout */
+.comment-layout {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+    position: relative;
+}
+
+.back-btn {
+    position: fixed;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #fbbf24;
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1rem;
+    transition: color 0.2s;
+    z-index: 10;
+}
+
+.back-btn:hover {
+    color: #f59e0b;
+}
+
+.back-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Post details */
+.post-details {
+    background-color: #1f2937;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.post-author {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.post-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Voting results */
+.voting-results {
+    margin-bottom: 2rem;
+}
+
+.option-result {
+    margin-bottom: 1rem;
+}
+
+.option-text {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #e5e7eb;
+}
+
+.option-bar {
+    background-color: #374151;
+    height: 1.5rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.option-progress {
+    background-color: #fbbf24;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.option-percentage {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Likes and comments count */
+.post-stats {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid #374151;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #9ca3af;
+}
+
+/* New comment form */
+.new-comment {
+    border-top: 1px solid #374151;
+    padding-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.comment-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.75rem;
+    background-color: #374151;
+    border: 2px solid #4b5563;
+    border-radius: 0.5rem;
+    color: white;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 1rem;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: #fbbf24;
+}
+
+.submit-comment {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Comments section */
+.comments-container {
+    border-top: 1px solid #374151;
+    padding-top: 1.5rem;
+}
+
+.comments-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.comment {
+    padding: 1rem 0;
+    border-bottom: 1px solid #374151;
+}
+
+.comment:last-child {
+    border-bottom: none;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: #e5e7eb;
+}
+
+.comment-date {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.comment-content {
+    color: #d1d5db;
+    line-height: 1.5;
+}
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styles */
+header {
+    background-color: #1f2937;
+    padding: 1rem 1.5rem;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo {
+    color: #fbbf24;
+    width: 2rem;
+    height: 2rem;
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Main content styles */
+main {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .buttons {
+        flex-direction: row;
+    }
+}
+
+/* Button styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary {
+    background-color: #fbbf24;
+    color: black;
+}
+
+.primary:hover {
+    background-color: #f59e0b;
+}
+
+.secondary {
+    background-color: white;
+    color: black;
+}
+
+.secondary:hover {
+    background-color: #f3f4f6;
+}
+
+/* Footer styles */
+footer {
+    background-color: #1f2937;
+    padding: 1rem;
+    text-align: center;
+    color: #9ca3af;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo">
+                        <path d="m9 12 2 2 4-4"></path>
+                        <path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path>
+                        <path d="M22 19H2"></path>
+                    </svg>
+                    <span class="header-title">SimpleVotes</span>
+                </div>
+            </div>
+        </header>
+
+        <button class="back-btn" onclick="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 19-7-7 7-7"></path>
+                <path d="M19 12H5"></path>
+            </svg>
+            Back to Votings
+        </button>
+
+        <main class="comment-layout">
+            <div class="post-details">
+                <div class="post-header">
+                    <span class="post-author" id="postAuthor"></span>
+                </div>
+                <h2 class="post-title" id="postTitle"></h2>
+
+                <div class="voting-results">
+                    <div id="votingOptions"></div>
+                </div>
+
+                <div class="post-stats">
+                    <div class="stat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M7 10v12"></path>
+                            <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2h0a3.13 3.13 0 0 1 3 3.88Z"></path>
+                        </svg>
+                        <span id="likesCount">0</span>
+                    </div>
+                    <div class="stat">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 14V2"></path>
+                            <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22h0a3.13 3.13 0 0 1-3-3.88Z"></path>
+                        </svg>
+                        <span id="dislikesCount">0</span>
+                    </div>
+                </div>
+
+                <div class="new-comment">
+                    <textarea id="commentInput" class="comment-input" placeholder="Write a comment..."></textarea>
+                    <div class="submit-comment">
+                        <button id="submitComment" class="btn primary">Post Comment</button>
+                    </div>
+                </div>
+
+                <div class="comments-container">
+                    <h3 class="comments-header">Comments</h3>
+                    <div id="commentsList"></div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; <span id="year"></span> SimpleVotes. All rights reserved.</p>
+        </footer>
+    </div>
+    <script>
+        // Set current year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Add button click handlers
+document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const action = this.textContent.toLowerCase();
+        if (action === 'register') {
+            window.location.href = 'register.html';
+        } else if (action === 'sign in') {
+            window.location.href = 'login.html';
+        }
+    });
+});
+    </script>
+</body>
+</html>
