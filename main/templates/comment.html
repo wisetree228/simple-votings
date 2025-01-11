@@ -4,8 +4,296 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimpleVotes - Comments</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="comment.css">
+    <style>
+        /* Comments page layout */
+.comment-layout {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+    position: relative;
+}
+
+.back-btn {
+    position: fixed;
+    left: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #fbbf24;
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 1rem;
+    transition: color 0.2s;
+    z-index: 10;
+}
+
+.back-btn:hover {
+    color: #f59e0b;
+}
+
+.back-btn svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Post details */
+.post-details {
+    background-color: #1f2937;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.post-author {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.post-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+/* Voting results */
+.voting-results {
+    margin-bottom: 2rem;
+}
+
+.option-result {
+    margin-bottom: 1rem;
+}
+
+.option-text {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #e5e7eb;
+}
+
+.option-bar {
+    background-color: #374151;
+    height: 1.5rem;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.option-progress {
+    background-color: #fbbf24;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.option-percentage {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #1f2937;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+/* Likes and comments count */
+.post-stats {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid #374151;
+    margin-bottom: 1.5rem;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #9ca3af;
+}
+
+/* New comment form */
+.new-comment {
+    border-top: 1px solid #374151;
+    padding-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.comment-input {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.75rem;
+    background-color: #374151;
+    border: 2px solid #4b5563;
+    border-radius: 0.5rem;
+    color: white;
+    font-family: inherit;
+    resize: vertical;
+    margin-bottom: 1rem;
+}
+
+.comment-input:focus {
+    outline: none;
+    border-color: #fbbf24;
+}
+
+.submit-comment {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Comments section */
+.comments-container {
+    border-top: 1px solid #374151;
+    padding-top: 1.5rem;
+}
+
+.comments-header {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.comment {
+    padding: 1rem 0;
+    border-bottom: 1px solid #374151;
+}
+
+.comment:last-child {
+    border-bottom: none;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.comment-author {
+    font-weight: 600;
+    color: #e5e7eb;
+}
+
+.comment-date {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.comment-content {
+    color: #d1d5db;
+    line-height: 1.5;
+}
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styles */
+header {
+    background-color: #1f2937;
+    padding: 1rem 1.5rem;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo {
+    color: #fbbf24;
+    width: 2rem;
+    height: 2rem;
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Main content styles */
+main {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .buttons {
+        flex-direction: row;
+    }
+}
+
+/* Button styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary {
+    background-color: #fbbf24;
+    color: black;
+}
+
+.primary:hover {
+    background-color: #f59e0b;
+}
+
+.secondary {
+    background-color: white;
+    color: black;
+}
+
+.secondary:hover {
+    background-color: #f3f4f6;
+}
+
+/* Footer styles */
+footer {
+    background-color: #1f2937;
+    padding: 1rem;
+    text-align: center;
+    color: #9ca3af;
+}
+    </style>
 </head>
 <body>
     <div class="container">
