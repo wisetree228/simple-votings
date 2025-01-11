@@ -1,20 +1,25 @@
-# Configuration file for the Sphinx documentation builder.
-#
-# For the full list of built-in configuration values, see the documentation:
-# https://www.sphinx-doc.org/en/master/usage/configuration.html
+import os
+import sys
 
-# -- Project information -----------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+sys.path.insert(0, os.path.abspath('../../')) #Путь к проекту
+os.environ['DJANGO_SETTINGS_MODULE'] = 'simple-votings-py-masters.settings'
+
+import django
+django.setup()
+
 
 project = 'SVPM'
-copyright = '2025, Alexey, Georgiy, Pavel, Matvey, Darya, Egor'
-author = 'Alexey, Georgiy, Pavel, Matvey, Darya, Egor'
-release = 'v0.6b'
+copyright = '2025, Alexey, Georgiy, Pavel, Egor, Matvey, Darya'
+author = 'Alexey, Georgiy, Pavel, Egor, Matvey, Darya'
+release = 'v0.7b'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon'
+]
 
 templates_path = ['_templates']
 exclude_patterns = []
