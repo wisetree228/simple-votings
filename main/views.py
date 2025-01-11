@@ -4,6 +4,7 @@ from hashlib import sha256
 from main.models import *
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login as auth_login
 
 # Create your views here.
 def login(request):
@@ -31,6 +32,7 @@ def register(request):
                 user.save()
                 user = authenticate(username=username, password=password)
                 if user:
+                    auth_login(request, user)
                     return redirect(testview)
 
     return render(request=request, template_name='register.html', context=context)
