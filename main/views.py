@@ -22,7 +22,7 @@ def login(request):
                 user = authenticate(request, username=username, password=password)
                 if user:
                     auth_login(request, user)
-                    return redirect(testview)
+                    return redirect(main_posts)
                 else:
                     messages.error(request,
                                    'Неверный пароль!')
@@ -48,26 +48,25 @@ def register(request):
                 user = authenticate(username=username, password=password)
                 if user:
                     auth_login(request, user)
-                    return redirect(testview)
+                    return redirect(main_posts)
             else:
                 messages.error(request, 'Ошибка регистрации, пользователь с такой почтой и/или юзернеймом существует!')
 
     return render(request=request, template_name='register.html', context=context)
 
-#@login_required
-def testview(request):
-    if request.user.is_authenticated:
-        context = {'username':request.user.username}
-    else:
-        context = {'username':'еруьу'}
-    return render(request, 'testpage.html', context=context)
 
 
 def logout_view(request):
     logout(request)
-    return redirect(testview)
+    return redirect(main_posts)
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect(testview)
+        return redirect(main_posts)
     return render(request, 'index.html', context={})
+
+
+def main_posts(request):
+    if not(request.user.is_authenticated):
+        return redirect(index)
+    return render(request, 'posts.html', context={})
