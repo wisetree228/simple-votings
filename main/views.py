@@ -70,3 +70,30 @@ def main_posts(request):
     if not(request.user.is_authenticated):
         return redirect(index)
     return render(request, 'posts.html', context={})
+
+
+def create_post(request):
+    if not(request.user.is_authenticated):
+        return redirect(index)
+    if request.method == 'POST':
+
+        title = request.POST.get('title')
+        options = request.POST.getlist('options[]')
+
+        if len(options) < 2:
+            messages.error(request, 'Минимум 2 варианта голосования!')
+        else:
+            voting = {
+                    'title': title,
+                    'options': options,
+            }
+            auth = User.objects.get(username=request.user.username)
+            post = Post(author = auth, text = voting['title'])
+            post.save()
+            for var in voting['options']:
+                opt = VotingVariant(text=var, post = post)
+                opt.save()
+
+
+
+    return render(request, 'create.html', context={})

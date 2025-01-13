@@ -317,6 +317,25 @@ footer {
 .form-actions .btn {
     flex: 1;
 }
+        .form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #374151;
+    border-radius: 0.5rem;
+    background-color: #374151;
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    resize: vertical; /* Позволяет изменять высоту текстового поля */
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #fbbf24;
+}
+        .messages{
+          color: red;
+        }
     </style>
 </head>
 <body>
@@ -338,41 +357,28 @@ footer {
             <div class="create-container">
                 <h2>Create New Voting</h2>
                 
-                <form id="createVotingForm">
+                <form id="createVotingForm" method="post">
+                    {% csrf_token %}
                     <div class="form-group">
-                        <input type="text" id="title" name="title" required>
-                        <label for="title">Voting Title</label>
-                    </div>
+    <textarea id="title" name="title" rows="4" maxlength="20000" required></textarea>
+    <label for="title">Voting Title</label>
+</div>
 
-                    <div class="voting-type">
-                        <h3>Voting Type</h3>
-                        <div class="type-options">
-                            <label class="type-option">
-                                <input type="radio" name="votingType" value="single" checked>
-                                <div class="type-content">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <path d="m9 12 2 2 4-4"></path>
-                                    </svg>
-                                    <span>Single Choice</span>
-                                </div>
-                            </label>
-                            <label class="type-option">
-                                <input type="radio" name="votingType" value="multiple">
-                                <div class="type-content">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                                        <path d="m9 12 2 2 4-4"></path>
-                                    </svg>
-                                    <span>Multiple Choice</span>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
 
                     <div class="options-section">
                         <h3>Options</h3>
-                        <div id="optionsContainer">
+
+
+
+
+
+
+
+
+
+
+
+                        <!-- <div id="optionsContainer">
                             <div class="option-group">
                                 <div class="form-group">
                                     <input type="text" class="option-input" required>
@@ -399,7 +405,44 @@ footer {
                                     </svg>
                                 </button>
                             </div>
+                        </div> -->
+
+
+
+
+
+                        <div id="optionsContainer">
+                            <div class="option-group">
+                                <div class="form-group">
+                                    <input type="text" name="options[]" class="option-input" required>
+                                    <label>Option 1</label>
+                                </div>
+                                <button type="button" class="remove-option-btn" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 6h18"></path>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="option-group">
+                                <div class="form-group">
+                                    <input type="text" name="options[]" class="option-input" required>
+                                    <label>Option 2</label>
+                                </div>
+                                <button type="button" class="remove-option-btn" disabled>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 6h18"></path>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                    </svg>
+                                </button>
+                            </div>
                         </div>
+
+
+
+
                         <button type="button" id="addOptionBtn" class="add-option-btn">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 5v14"></path>
@@ -408,6 +451,13 @@ footer {
                             Add Option
                         </button>
                     </div>
+                    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
                     <div class="form-actions">
                         <button type="button" class="btn secondary" onclick="window.history.back()">Cancel</button>
@@ -422,6 +472,16 @@ footer {
         </footer>
     </div>
     <script>
+
+        const titleTextarea = document.getElementById('title');
+titleTextarea.addEventListener('input', () => {
+    if (titleTextarea.value.length > 20000) {
+        titleTextarea.value = titleTextarea.value.slice(0, 20000);
+        alert('Maximum 20,000 characters allowed.');
+    }
+});
+
+
         // Set current year in footer
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -434,7 +494,7 @@ document.getElementById('addOptionBtn').addEventListener('click', () => {
     optionGroup.className = 'option-group';
     optionGroup.innerHTML = `
         <div class="form-group">
-            <input type="text" class="option-input" required>
+            <input type="text" name="options[]" class="option-input" required> <!-- Добавлен name="options[]" -->
             <label>Option ${optionCount}</label>
         </div>
         <button type="button" class="remove-option-btn">
@@ -478,37 +538,32 @@ function updateRemoveButtons() {
     });
 }
 
-// Handle form submission
-document.getElementById('createVotingForm').addEventListener('submit', function(e) {
+document.getElementById('createVotingForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    // Get form data
-    const title = document.getElementById('title').value;
-    const votingType = document.querySelector('input[name="votingType"]:checked').value;
-    const options = Array.from(document.querySelectorAll('.option-input')).map(input => input.value);
+    // Создаем объект FormData
+    const formData = new FormData(this);
 
-    // Validate
-    if (options.some(option => !option.trim())) {
-        alert('Please fill in all options');
-        return;
+    // Отправляем данные на сервер
+    try {
+        const response = await fetch('{% url "create" %}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken'),  // Добавляем CSRF-токен
+            },
+            body: formData,
+        });
+
+        if (response.ok) {
+            // Перенаправляем пользователя на страницу с голосованиями
+            window.location.href = '{% url "posts" %}';
+        } else {
+            alert('Error creating voting. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
     }
-
-    // Create voting object
-    const voting = {
-        title,
-        type: votingType,
-        options: options.map(text => ({ text, votes: 0 })),
-        author: 'Current User',
-        likes: 0,
-        dislikes: 0,
-        comments: []
-    };
-
-    // Here you would typically send the data to a server
-    console.log('New voting created:', voting);
-
-    // Redirect back to all votings
-    window.location.href = 'posts.html';
 });
     </script>
 </body>
