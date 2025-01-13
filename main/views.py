@@ -9,6 +9,15 @@ from django.contrib import messages
 
 # Create your views here.
 def login(request):
+    """
+    Представление для страницы авторизации. Форма принимает email и пароль,
+    в случае неправильного ввода пароля или email показывает пользователю соответствующее представление об ошибке.
+    После успешной авторизации перенаправляет пользователя на страницу с лентой постов
+    Args:
+        request (HttpRequest): request
+    Returns:
+        HttpResponse
+    """
     form = SignInForm()
     context={}
     context['form'] = form
@@ -30,6 +39,16 @@ def login(request):
     return render(request=request, template_name='login.html', context=context)
 
 def register(request):
+    """
+    Представление для страницы регистрации. Форма принимает имя, фамилию, юзернейм, email и пароль,
+    если аккаунт с данным юзернеймом/почтой уже существует, выдаёт пользователю соответствующее сообщение об ошибке.
+    После успешной регистрации производит автоматическую авторизацию в только что созданный аккаунт
+    и перенаправляет пользователя на страницу с лентой постов.
+    Args:
+        request (HttpRequest): request
+    Returns:
+        HttpResponse
+    """
     form = RegisterForm()
     context={}
     context['form'] = form
@@ -57,26 +76,56 @@ def register(request):
 
 
 def logout_view(request):
+    """
+    Представление выхода. После выхода перенаправляет на начальную страницу с
+    выбором регистрации или входа (index)
+    Args:
+        request (HttpRequest): request
+    Returns:
+        HttpResponseRedirect
+    """
+    if not(request.user.is_authenticated):
+        return redirect('index')
     logout(request)
-    return redirect(main_posts)
+    return redirect('index')
 
 def index(request):
+    """
+    Начальная страница, предоставляет выбор между регистрацией и авторизацией
+    Args:
+        request (HttpRequest): request
+    Returns:
+        HttpResponse
+    """
     if request.user.is_authenticated:
         return redirect(main_posts)
     return render(request, 'index.html', context={})
 
 
 def main_posts(request):
+    """
+    Страница отображения ленты постов
+    Args:
+        request (HttpRequest): request
+    Returns:
+        HttpResponse
+    """
     if not(request.user.is_authenticated):
         return redirect(index)
     return render(request, 'posts.html', context={})
 
 
 def create_post(request):
+    """
+    Страница создания поста (голосования)
+    Args:
+        request (HttpRequest): request
+    Returns:
+        HttpResponse
+    """
     if not(request.user.is_authenticated):
         return redirect(index)
     if request.method == 'POST':
-
         title = request.POST.get('title')
         options = request.POST.getlist('options[]')
 
@@ -93,7 +142,5 @@ def create_post(request):
             for var in voting['options']:
                 opt = VotingVariant(text=var, post = post)
                 opt.save()
-
-
 
     return render(request, 'create.html', context={})
