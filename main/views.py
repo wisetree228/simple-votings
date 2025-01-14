@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.contrib import messages
+from json import dumps
 
 # Create your views here.
 def login(request):
@@ -112,7 +113,33 @@ def main_posts(request):
     """
     if not(request.user.is_authenticated):
         return redirect(index)
-    return render(request, 'posts.html', context={})
+
+    context = {}
+    posts_from_db = Post.objects.all()
+    posts = []
+    for post_db in posts_from_db:
+        variants=[]
+        vars_db = post_db.variants.all()
+        for var in vars_db:
+            variants.append(
+                {
+                    'text':var.text,
+                    'id':var.id,
+                }
+            )
+        post = {
+            'author':post_db.author.username,
+            'text':post_db.text,
+            'variants':variants,
+            'created_at':post_db.created_at,
+        }
+        posts.append(post)
+    context['posts'] = posts
+    #print(dumps(posts, indent=4, ensure_ascii=False))
+
+
+
+    return render(request, 'posts.html', context=context)
 
 
 def create_post(request):
