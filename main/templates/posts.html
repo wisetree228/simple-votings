@@ -297,6 +297,11 @@ footer {
 .profile-btn:hover {
     background-color: #374151;
 }
+.post-date {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    margin-left: auto; /* Чтобы дата была справа */
+}
     </style>
 </head>
 <body>
@@ -324,7 +329,7 @@ footer {
 
         <main class="posts-layout">
             <aside class="sidebar">
-                <button class="btn primary create-voting-btn">
+                <button class="btn primary create-voting-btn" onclick="window.location.href='{% url 'create' %}'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 5v14"></path>
                         <path d="M5 12h14"></path>
@@ -364,9 +369,123 @@ footer {
                     <input type="text" id="searchInput" placeholder="Search votings...">
                 </div>
 
+
+
+
+                
+
+                {% for post in posts %}
+
                 <div class="posts-container" id="postsContainer">
-                    <!-- Posts will be dynamically inserted here -->
+                    <!-- Post 1 -->
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-author">{{ post.author }}</span>
+                            <span class="post-date">{{ post.created_at }}</span>
+                        </div>
+                        <div class="post-title">{{ post.text }}</div>
+                        <div class="post-content">
+                            <p>Выберите один из предложенных вариантов:</p>
+                            <form class="voting-form" method="post">
+                                <div class="voting-options">
+
+                                    {% for var in post.variants %}
+                                    <label class="voting-option">
+                                        <input type="radio" name="vote" value="Python">
+                                        {{ var.text }}
+                                    </label>
+                                    
+                                    {% endfor %}
+
+                                </div>
+                                <button type="submit" class="btn primary">Проголосовать</button>
+                            </form>
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                <span>12</span>
+                            </button>
+                            <button class="action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span>5</span>
+                            </button>
+                            <button class="action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                    <polyline points="16 6 12 2 8 6"></polyline>
+                                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Поделиться</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+                
+                    <!-- Post 2 -->
+                    <!-- <div class="post">
+                        <div class="post-header">
+                            <span class="post-author">@user456</span>
+                            <span class="post-date">14 октября 2023, 10:15</span>
+                        </div>
+                        <div class="post-title">Какой ваш любимый фреймворк для веб-разработки?</div>
+                        <div class="post-content">
+                            <p>Выберите один из предложенных вариантов:</p>
+                            <form class="voting-form" method="post">
+                                <div class="voting-options">
+                                    <label class="voting-option">
+                                        <input type="radio" name="vote" value="Django">
+                                        Django
+                                    </label>
+                                    <label class="voting-option">
+                                        <input type="radio" name="vote" value="Flask">
+                                        Flask
+                                    </label>
+                                    <label class="voting-option">
+                                        <input type="radio" name="vote" value="React">
+                                        React
+                                    </label>
+                                    <label class="voting-option">
+                                        <input type="radio" name="vote" value="Vue">
+                                        Vue
+                                    </label>
+                                </div>
+                                <button type="submit" class="btn primary">Проголосовать</button>
+                            </form>
+                        </div>
+                        <div class="post-actions">
+                            <button class="action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                <span>8</span>
+                            </button>
+                            <button class="action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span>3</span>
+                            </button>
+                            <button class="action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                    <polyline points="16 6 12 2 8 6"></polyline>
+                                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Поделиться</span>
+                            </button>
+                        </div>
+                    </div> -->
+
                 </div>
+
+
+
             </div>
         </main>
 
@@ -375,19 +494,31 @@ footer {
         </footer>
     </div>
     <script>
-        // Update navigation to my votings
-document.querySelector('.nav-btn:nth-child(2)').addEventListener('click', () => {
-    window.location.href = 'myvotings.html';
-});
+       // Получаем элементы DOM
+const searchInput = document.getElementById('searchInput');
+const postsContainer = document.getElementById('postsContainer');
+const posts = Array.from(postsContainer.getElementsByClassName('post'));
 
-// Add profile button navigation
-document.querySelector('.profile-btn').addEventListener('click', () => {
-    window.location.href = 'profile.html';
-});
+// Функция для фильтрации постов
+function filterPosts(searchText) {
+    posts.forEach(post => {
+        const postTitle = post.querySelector('.post-title').textContent.toLowerCase();
+        const postContent = post.querySelector('.post-content').textContent.toLowerCase();
+        const postAuthor = post.querySelector('.post-author').textContent.toLowerCase();
 
-// Add create voting button navigation
-document.querySelector('.create-voting-btn').addEventListener('click', () => {
-    window.location.href = '{% url 'create' %}';
+        // Проверяем, содержит ли заголовок, текст или автор введённый текст
+        if (postTitle.includes(searchText) || postContent.includes(searchText) || postAuthor.includes(searchText)) {
+            post.style.display = 'block'; // Показываем пост
+        } else {
+            post.style.display = 'none'; // Скрываем пост
+        }
+    });
+}
+
+// Обработчик события для поля поиска
+searchInput.addEventListener('input', (event) => {
+    const searchText = event.target.value.trim().toLowerCase(); // Получаем текст из поля поиска
+    filterPosts(searchText); // Фильтруем посты
 });
     </script>
 </body>
