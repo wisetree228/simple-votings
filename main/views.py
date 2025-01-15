@@ -1,12 +1,9 @@
 from django.shortcuts import render, redirect
 from main.forms import *
-from hashlib import sha256
 from main.models import *
 from django.contrib.auth import authenticate, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.contrib import messages
-from json import dumps
 
 # Create your views here.
 def login(request):
@@ -128,6 +125,7 @@ def main_posts(request):
                 }
             )
         post = {
+            'id':post_db.id,
             'author':post_db.author.username,
             'text':post_db.text,
             'variants':variants,
@@ -135,7 +133,19 @@ def main_posts(request):
         }
         posts.append(post)
     context['posts'] = posts
-    #print(dumps(posts, indent=4, ensure_ascii=False))
+    if request.method == 'POST':
+        # Получаем выбранный вариант голосования
+        selected_vote = request.POST.get('vote')
+        vote_list = selected_vote.split('!!!')
+        variant = VotingVariant.objects.get(id = int(vote_list[0]))
+        user = User.objects.get(username = request.user.username)
+        post = Post.objects.get(id = int(vote_list[1]))
+        for var in post.variants.all():
+            if Vote.objects.filter(variant = var, user = user).exists():
+                vote = Vote.objects.get(variant = var, user = user)
+                vote.delete()
+        vote = Vote(user=user, variant = variant)
+        vote.save()
 
 
 
@@ -156,18 +166,15 @@ def create_post(request):
         title = request.POST.get('title')
         options = request.POST.getlist('options[]')
 
-        if len(options) < 2:
-            messages.error(request, 'Минимум 2 варианта голосования!')
+        if len(options) < 2 or ('' in options):
+            messages.error(request, 'Минимум 2 не пустых варианта голосования!')
         else:
-            voting = {
-                    'title': title,
-                    'options': options,
-            }
             auth = User.objects.get(username=request.user.username)
-            post = Post(author = auth, text = voting['title'])
+            post = Post(author = auth, text = title)
             post.save()
-            for var in voting['options']:
+            for var in options:
                 opt = VotingVariant(text=var, post = post)
                 opt.save()
+            return redirect('posts')
 
     return render(request, 'create.html', context={})
