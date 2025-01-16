@@ -426,13 +426,7 @@ footer {
         </footer>
     </div>
     <script>
-       document.getElementById('backButton').addEventListener('click', function() {
-    if (history.length > 1) {
-        history.back(); // Возврат на предыдущую страницу
-    } else {
-        window.location.href = '{% url "posts" %}'; // Перенаправление на страницу с постами
-    }
-});
+       
     </script>
 </body>
 </html>
