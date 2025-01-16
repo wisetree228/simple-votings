@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>SimpleVotes - Posts</title>
     <style>
         * {
@@ -106,22 +107,8 @@ footer {
     text-align: center;
     color: #9ca3af;
 }
-        /* Layout */
-.posts-layout {
-    display: flex;
-    gap: 2rem;
-    padding: 2rem;
-    flex-grow: 1;
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-}
 
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    flex-shrink: 0;
-}
+
 
 .create-voting-btn {
     width: 100%;
@@ -164,11 +151,7 @@ footer {
     color: #fbbf24;
 }
 
-/* Main Content */
-.main-content {
-    flex-grow: 1;
-    max-width: 800px;
-}
+
 
 /* Search */
 .search-container {
@@ -302,6 +285,42 @@ footer {
     font-size: 0.875rem;
     margin-left: auto; /* Чтобы дата была справа */
 }
+.action-btn.like-btn.liked svg {
+    fill: red; /* Закрашиваем сердечко красным */
+    stroke: red; /* Меняем цвет обводки на красный */
+}
+
+.action-btn.like-btn.liked .like-count {
+    color: red; /* Меняем цвет счётчика лайков на красный */
+}
+
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 1rem; /* Отступ от верхнего края экрана */
+    align-self: flex-start; /* Чтобы sidebar не растягивался по высоте */
+    height: 100vh; /* Высота sidebar равна высоте экрана */
+    overflow-y: auto; /* Добавляем прокрутку, если контент не помещается */
+}
+
+.posts-layout {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    flex-grow: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: flex-start; /* Выравниваем элементы по верхнему краю */
+    justify-content: center; /* Центрируем основной контент */
+}
+
+.main-content {
+    flex-grow: 1;
+    max-width: 800px;
+    margin-left: 2rem; /* Небольшой отступ слева */
+}
     </style>
 </head>
 <body>
@@ -402,12 +421,14 @@ footer {
                             </form>
                         </div>
                         <div class="post-actions">
-                            <button class="action-btn">
+                            
+                            <button class="action-btn like-btn {% if post.id in user_liked_posts %}liked{% endif %}" data-post-id="{{ post.id }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                                 </svg>
-                                <span>12</span>
+                                <span class="like-count">{{ post.likes_count }}</span>
                             </button>
+
                             <button class="action-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -466,6 +487,43 @@ searchInput.addEventListener('input', (event) => {
     const searchText = event.target.value.trim().toLowerCase(); // Получаем текст из поля поиска
     filterPosts(searchText); // Фильтруем посты
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const likeButtons = document.querySelectorAll('.action-btn.like-btn');
+
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const postId = this.dataset.postId;
+            const url = `/like/${postId}/`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',  // Добавьте CSRF-токен для защиты
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'liked' || data.status === 'unliked') {
+                    const likeCountElement = this.querySelector('.like-count');
+                    likeCountElement.textContent = data.likes_count;
+
+                    // Добавляем или удаляем класс 'liked' в зависимости от статуса
+                    if (data.status === 'liked') {
+                        this.classList.add('liked');
+                    } else {
+                        this.classList.remove('liked');
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
     </script>
 </body>
 </html>

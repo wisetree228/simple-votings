@@ -4,6 +4,9 @@ from main.models import *
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def login(request):
@@ -130,22 +133,26 @@ def main_posts(request):
             'text':post_db.text,
             'variants':variants,
             'created_at':post_db.created_at,
+            'likes_count':Like.objects.filter(post=post_db).count(),
         }
         posts.append(post)
     context['posts'] = posts
+    context['user_liked_posts'] = Like.objects.filter(user=User.objects.get(username = request.user.username)).values_list('post_id', flat=True)
+
     if request.method == 'POST':
-        # Получаем выбранный вариант голосования
         selected_vote = request.POST.get('vote')
         vote_list = selected_vote.split('!!!')
         variant = VotingVariant.objects.get(id = int(vote_list[0]))
         user = User.objects.get(username = request.user.username)
         post = Post.objects.get(id = int(vote_list[1]))
-        for var in post.variants.all():
-            if Vote.objects.filter(variant = var, user = user).exists():
-                vote = Vote.objects.get(variant = var, user = user)
-                vote.delete()
-        vote = Vote(user=user, variant = variant)
-        vote.save()
+        if VotingVariant.objects.filter(post = post).exists():
+            # проверяем, голосовал ли пользователь в этом посте, если да то предыдущий голос удаляем
+            for var in post.variants.all():
+                if Vote.objects.filter(variant = var, user = user).exists():
+                    vote = Vote.objects.get(variant = var, user = user)
+                    vote.delete()
+            vote = Vote(user=user, variant = variant)
+            vote.save()
 
 
 
@@ -178,3 +185,19 @@ def create_post(request):
             return redirect('posts')
 
     return render(request, 'create.html', context={})
+
+
+@csrf_exempt
+@require_POST
+def like_post(request, post_id):
+    if not request.user.is_authenticated:
+        return JsonResponse({'status': 'error', 'message': 'User is not authenticated'}, status=403)
+
+    post = Post.objects.get(id=post_id)
+    like, created = Like.objects.get_or_create(user=User.objects.get(username=request.user.username), post=post)
+
+    if not created:
+        like.delete()
+        return JsonResponse({'status': 'unliked', 'likes_count': Like.objects.filter(post=post).count()})
+    else:
+        return JsonResponse({'status': 'liked', 'likes_count': Like.objects.filter(post=post).count()})
