@@ -134,6 +134,7 @@ def main_posts(request):
             'variants':variants,
             'created_at':post_db.created_at,
             'likes_count':Like.objects.filter(post=post_db).count(),
+            'comments_count':Comment.objects.filter(post=post_db).count(),
         }
         posts.append(post)
     context['posts'] = posts
@@ -201,3 +202,48 @@ def like_post(request, post_id):
         return JsonResponse({'status': 'unliked', 'likes_count': Like.objects.filter(post=post).count()})
     else:
         return JsonResponse({'status': 'liked', 'likes_count': Like.objects.filter(post=post).count()})
+
+
+def comments(request, post_id):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if not(Post.objects.filter(id=post_id).exists()):
+        return redirect('posts')
+    post = Post.objects.get(id = post_id)
+    context={}
+    res=[]
+    count_of_votes = 0
+    vars = post.variants.all()
+    for var in vars:
+        count_of_votes+=Vote.objects.filter(variant = var).count()
+    if count_of_votes!=0:
+        for var in vars:
+            res.append({
+                'text':var.text,
+                'percent':round((Vote.objects.filter(variant = var).count() / count_of_votes)*100),
+            })
+    else:
+        for var in vars:
+            res.append({
+                'text':var.text,
+                'percent':0,
+            })
+    comms=[]
+    for comment in post.comments.all():
+        comms.append({
+            'text':comment.text,
+            'author':comment.author.username,
+            'created_at':comment.created_at,
+        })
+    context['post_text'] = post.text
+    context['results'] = res
+    context['comments'] = comms
+    context['author'] = post.author.username
+    if request.method=='POST':
+        text = request.POST.get('text')
+        comm = Comment(text=text, author=User.objects.get(username=request.user.username), post=post)
+        comm.save()
+        return redirect('comments', post_id=post_id)
+
+
+    return render(request, 'comment.html', context=context)
