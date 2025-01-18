@@ -8,7 +8,7 @@ import django
 django.setup()
 
 
-project = 'SVPM'
+project = 'Simple Votings'
 copyright = '2025, Alexey, Georgiy, Pavel, Egor, Matvey, Darya'
 author = 'Alexey, Georgiy, Pavel, Egor, Matvey, Darya'
 release = 'v0.7b'
@@ -29,5 +29,5 @@ language = 'ru'
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
+html_theme = 'sphinx_book_theme'
 html_static_path = ['_static']

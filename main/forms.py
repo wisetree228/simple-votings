@@ -2,15 +2,6 @@ from django import forms
 
 
 class RegisterForm(forms.Form):
-    """
-    Представление для страницы регистрации. Форма принимает email, пароль, username,
-    name, surname.
-    После успешной регистрации перенаправляет пользователя на страницу с лентой постов.
-    Args:
-        forms.Form
-    Returns:
-        HttpResponse
-    """
 
     name = forms.CharField(widget=forms.TextInput(attrs={
         'class': "form-group",
