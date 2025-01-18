@@ -20,5 +20,12 @@ from main.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', login)
+    path('', index, name='index'),
+    path('login/', login, name='login'),
+    path('register/', register, name='register'),
+    path('logout/', logout_view, name='logout'),
+    path('posts/', main_posts, name='posts'),
+    path('create/', create_post, name='create'),
+    path('like/<int:post_id>/', like_post, name='like_post'),
+    path('comments/<int:post_id>', comments, name='comments')
 ]

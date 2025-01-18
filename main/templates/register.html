@@ -180,6 +180,9 @@ footer {
     text-align: center;
     color: #9ca3af;
 }
+        .messages{
+          color: red;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -199,12 +202,13 @@ footer {
         </header>
 
         <main>
-            <form id="registrationForm" class="form-container">
+            <form id="registrationForm" class="form-container" method="post" action="{% url 'register' %}">
+                {% csrf_token %}
                 <h2>Create Account</h2>
                 
                 <div class="form-group">
                      {{ form.username }}
-                    <label for="nickname">Nickname</label>
+                    <label for="nickname">Username</label>
                 </div>
 
                 <div class="form-group">
@@ -226,12 +230,19 @@ footer {
                     {{ form.password }}
                     <label for="password">Password</label>
                 </div>
+                {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 
 
                 <button type="submit" class="btn primary">Register</button>
                 
                 <p class="form-footer">
-                    Already have an account? <a href="index.html">Sign In</a>
+                    Already have an account? <a href="{% url 'login' %}">Sign In</a>
                 </p>
             </form>
         </main>
@@ -240,44 +251,44 @@ footer {
             <p>&copy; <span id="year"></span> SimpleVotes. All rights reserved.</p>
         </footer>
     </div>
-    <script>
-        // Set current year in footer
-document.getElementById('year').textContent = new Date().getFullYear();
+<!--    <script>-->
+<!--        // Set current year in footer-->
+<!--document.getElementById('year').textContent = new Date().getFullYear();-->
 
-// Handle form submission
-document.getElementById('registrationForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+<!--// Handle form submission-->
+<!--document.getElementById('registrationForm').addEventListener('submit', function(e) {-->
+<!--    e.preventDefault();-->
 
-    // Get form values
-    const nickname = document.getElementById('nickname').value;
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
+<!--    // Get form values-->
+<!--    const nickname = document.getElementById('nickname').value;-->
+<!--    const firstName = document.getElementById('firstName').value;-->
+<!--    const lastName = document.getElementById('lastName').value;-->
+<!--    const email = document.getElementById('email').value;-->
+<!--    const password = document.getElementById('password').value;-->
+<!--    const confirmPassword = document.getElementById('confirmPassword').value;-->
 
-    // Basic validation
-    if (!nickname || !firstName || !lastName || !email || !password || !confirmPassword) {
-        alert('Please fill in all fields');
-        return;
-    }
+<!--    // Basic validation-->
+<!--    if (!nickname || !firstName || !lastName || !email || !password || !confirmPassword) {-->
+<!--        alert('Please fill in all fields');-->
+<!--        return;-->
+<!--    }-->
 
-    if (password !== confirmPassword) {
-        alert('Passwords do not match!');
-        return;
-    }
+<!--    if (password !== confirmPassword) {-->
+<!--        alert('Passwords do not match!');-->
+<!--        return;-->
+<!--    }-->
 
-    // Here you would typically send the data to a server
-    console.log('Registration form submitted:', {
-        nickname,
-        firstName,
-        lastName,
-        email
-    });
+<!--    // Here you would typically send the data to a server-->
+<!--    console.log('Registration form submitted:', {-->
+<!--        nickname,-->
+<!--        firstName,-->
+<!--        lastName,-->
+<!--        email-->
+<!--    });-->
 
-    // Redirect to posts page after successful registration
-    window.location.href = 'posts.html';
-});
-    </script>
+<!--    // Redirect to posts page after successful registration-->
+<!--    window.location.href = 'posts.html';-->
+<!--});-->
+<!--    </script>-->
 </body>
 </html>
