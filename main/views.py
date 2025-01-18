@@ -239,6 +239,8 @@ def comments(request, post_id):
     context['results'] = res
     context['comments'] = comms
     context['author'] = post.author.username
+    context['post_id'] = post_id
+    context['likes_count'] = Like.objects.filter(post = post).count()
     if request.method=='POST':
         text = request.POST.get('text')
         comm = Comment(text=text, author=User.objects.get(username=request.user.username), post=post)
