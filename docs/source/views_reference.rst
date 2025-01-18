@@ -1,7 +1,7 @@
 Views Reference
 ===============
 
-.. automodule:: first_app.views
+.. automodule:: main.views
    :members:
    :undoc-members:
 

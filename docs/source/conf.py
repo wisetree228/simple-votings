@@ -2,7 +2,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath('../../')) #Путь к проекту
-os.environ['DJANGO_SETTINGS_MODULE'] = 'simple-votings-py-masters.settings'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'simple_votings.settings')
 
 import django
 django.setup()
