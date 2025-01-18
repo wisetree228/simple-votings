@@ -1,296 +1,269 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimpleVotes - Profile</title>
     <style>
         /* Create container styles */
-.create-container {
-    background-color: #1f2937;
-    padding: 2rem;
-    border-radius: 1rem;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.create-container h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: white;
-    font-size: 1.5rem;
-}
-
-.create-container h3 {
-    color: #e5e7eb;
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-}
-
-/* Voting type styles */
-.voting-type {
-    margin: 2rem 0;
-}
-
-.type-options {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-}
-
-.type-option {
-    cursor: pointer;
-}
-
-.type-option input[type="radio"] {
-    display: none;
-}
-
-.type-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1.5rem;
-    background-color: #374151;
-    border: 2px solid #4b5563;
-    border-radius: 0.5rem;
-    color: #9ca3af;
-    transition: all 0.2s;
-}
-
-.type-option input[type="radio"]:checked + .type-content {
-    border-color: #fbbf24;
-    color: #fbbf24;
-}
-
-.type-content svg {
-    width: 2rem;
-    height: 2rem;
-    stroke: currentColor;
-}
-
-/* Options section styles */
-.options-section {
-    margin: 2rem 0;
-}
-
-.option-group {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.option-group .form-group {
-    flex-grow: 1;
-}
-
-.remove-option-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    color: #ef4444;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    margin-top: 0.5rem;
-}
-
-.remove-option-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.remove-option-btn:not(:disabled):hover {
-    background-color: #374151;
-}
-
-.add-option-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: none;
-    border: 2px dashed #4b5563;
-    color: #9ca3af;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    width: 100%;
-    justify-content: center;
-    transition: all 0.2s;
-}
-
-.add-option-btn:hover {
-    border-color: #fbbf24;
-    color: #fbbf24;
-}
-
-/* Form actions */
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-}
-
-.form-actions .btn {
-    flex: 1;
-}
-        /* Form styles */
-.form-container {
-    background-color: #1f2937;
-    padding: 2rem;
-    border-radius: 1rem;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.form-container h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: white;
-    font-size: 1.5rem;
-}
-
-.form-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 2px solid #374151;
-    border-radius: 0.5rem;
-    background-color: #374151;
-    color: white;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: #fbbf24;
-}
-
-.form-group label {
-    position: absolute;
-    left: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #9ca3af;
-    transition: all 0.3s ease;
-    pointer-events: none;
-    font-size: 1rem;
-}
-
-.form-group input:focus + label,
-.form-group input:not(:placeholder-shown) + label {
-    top: 0;
-    transform: translateY(-100%);
-    font-size: 0.875rem;
-    color: #fbbf24;
-}
-
-.form-container .btn {
-    width: 100%;
-    margin-top: 1rem;
-}
-
-.form-footer {
-    text-align: center;
-    margin-top: 1.5rem;
-    color: #9ca3af;
-}
-
-.form-footer a {
-    color: #fbbf24;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.form-footer a:hover {
-    text-decoration: underline;
-}
         /* Profile container styles */
-.profile-container {
-    background-color: #1f2937;
-    padding: 2rem;
-    border-radius: 1rem;
-    width: 100%;
-    max-width: 500px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+        .profile-container {
+            background-color: #1f2937;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-.profile-container h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: white;
-    font-size: 1.5rem;
-}
+        .profile-container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+            font-size: 1.5rem;
+        }
 
-/* Avatar section styles */
-.avatar-section {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 2rem;
-}
+        /* Avatar section styles */
+        .avatar-section {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
 
-.avatar-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
+        .avatar-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
 
-#avatarPreview {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #fbbf24;
-}
+        #avatarPreview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #fbbf24;
+        }
 
-.change-avatar-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: none;
-    border: none;
-    color: #fbbf24;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
-}
+        .change-avatar-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: #fbbf24;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+        }
 
-.change-avatar-btn:hover {
-    background-color: #374151;
-}
+        .change-avatar-btn:hover {
+            background-color: #374151;
+        }
 
-/* Form actions */
-.form-actions {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-}
+        /* Form actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
 
-.form-actions .btn {
-    flex: 1;
-}
+        .form-actions .btn {
+            flex: 1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: black;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header styles */
+        header {
+            background-color: #1f2937;
+            padding: 1rem 1.5rem;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo {
+            color: #fbbf24;
+            width: 2rem;
+            height: 2rem;
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* Main content styles */
+        main {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .buttons {
+                flex-direction: row;
+            }
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1.125rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .primary {
+            background-color: #fbbf24;
+            color: black;
+        }
+
+        .primary:hover {
+            background-color: #f59e0b;
+        }
+
+        .secondary {
+            background-color: white;
+            color: black;
+        }
+
+        .secondary:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #1f2937;
+            padding: 1rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+
+        .form-container {
+            background-color: #1f2937;
+            padding: 2rem;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #374151;
+            border-radius: 0.5rem;
+            background-color: #374151;
+            color: white;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #fbbf24;
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus+label,
+        .form-group input:not(:placeholder-shown)+label {
+            top: 0;
+            transform: translateY(-100%);
+            font-size: 0.875rem;
+            color: #fbbf24;
+        }
+
+        .form-container .btn {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #9ca3af;
+        }
+
+        .form-footer a {
+            color: #fbbf24;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
             <div class="header-content">
                 <div class="header-left">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="logo">
                         <path d="m9 12 2 2 4-4"></path>
                         <path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path>
                         <path d="M22 19H2"></path>
@@ -303,12 +276,18 @@
         <main>
             <div class="profile-container">
                 <h2>Edit Profile</h2>
-                
+
                 <div class="avatar-section">
                     <div class="avatar-wrapper">
-                        <img id="avatarPreview" src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=150&h=150" alt="Profile avatar">
+                        
+
+                        <img id="avatarPreview" src="https://ui-avatars.com/api/?name=John+Doe&background=random"
+                            alt="Profile avatar">
+
                         <button class="change-avatar-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
                                 <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
                                 <path d="M16 5V3"></path>
                                 <path d="M8 14a3 3 0 0 1 4-4"></path>
@@ -324,17 +303,17 @@
                 <form id="profileForm">
                     <div class="form-group">
                         <input type="text" id="nickname" name="nickname" required>
-                        <label for="nickname">Nickname</label>
+                        <label for="nickname">Username</label>
                     </div>
 
                     <div class="form-group">
                         <input type="text" id="firstName" name="firstName" required>
-                        <label for="firstName">First Name</label>
+                        <label for="firstName">Name</label>
                     </div>
 
                     <div class="form-group">
                         <input type="text" id="lastName" name="lastName" required>
-                        <label for="lastName">Last Name</label>
+                        <label for="lastName">Surname</label>
                     </div>
 
                     <div class="form-group">
@@ -371,85 +350,86 @@
     </div>
     <script>
         // Set current year in footer
-document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-// Mock user data - in a real app, this would come from a database
-const mockUser = {
-    nickname: 'johndoe',
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?auto=format&fit=crop&w=150&h=150'
-};
-
-// Populate form with user data
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('nickname').value = mockUser.nickname;
-    document.getElementById('firstName').value = mockUser.firstName;
-    document.getElementById('lastName').value = mockUser.lastName;
-    document.getElementById('email').value = mockUser.email;
-    document.getElementById('avatarPreview').src = mockUser.avatar;
-
-    // Add floating label effect
-    document.querySelectorAll('.form-group input').forEach(input => {
-        if (input.value) {
-            input.classList.add('has-value');
-        }
-    });
-});
-
-// Handle avatar change
-document.querySelector('.change-avatar-btn').addEventListener('click', () => {
-    document.getElementById('avatarInput').click();
-});
-
-document.getElementById('avatarInput').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('avatarPreview').src = e.target.result;
+        // Mock user data - in a real app, this would come from a database
+        const mockUser = {
+            nickname: 'johndoe',
+            firstName: 'John',
+            lastName: 'Doe',
+            email: 'john.doe@example.com',
+            avatar: 'https://ui-avatars.com/api/?name=John+Doe&background=random'
         };
-        reader.readAsDataURL(file);
-    }
-});
 
-// Handle form submission
-document.getElementById('profileForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+        // Populate form with user data
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('nickname').value = mockUser.nickname;
+            document.getElementById('firstName').value = mockUser.firstName;
+            document.getElementById('lastName').value = mockUser.lastName;
+            document.getElementById('email').value = mockUser.email;
+            document.getElementById('avatarPreview').src = mockUser.avatar;
 
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-    const currentPassword = document.getElementById('currentPassword').value;
+            // Add floating label effect
+            document.querySelectorAll('.form-group input').forEach(input => {
+                if (input.value) {
+                    input.classList.add('has-value');
+                }
+            });
+        });
 
-    // Validate passwords if trying to change them
-    if (newPassword || confirmNewPassword) {
-        if (!currentPassword) {
-            alert('Please enter your current password to change it');
-            return;
-        }
-        if (newPassword !== confirmNewPassword) {
-            alert('New passwords do not match');
-            return;
-        }
-    }
+        // Handle avatar change
+        document.querySelector('.change-avatar-btn').addEventListener('click', () => {
+            document.getElementById('avatarInput').click();
+        });
 
-    // Get form data
-    const formData = {
-        nickname: document.getElementById('nickname').value,
-        firstName: document.getElementById('firstName').value,
-        lastName: document.getElementById('lastName').value,
-        email: document.getElementById('email').value,
-        currentPassword: currentPassword,
-        newPassword: newPassword
-    };
+        document.getElementById('avatarInput').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('avatarPreview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-    // Here you would typically send the data to a server
-    console.log('Profile update submitted:', formData);
+        // Handle form submission
+        document.getElementById('profileForm').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-    // Show success message
-    alert('Profile updated successfully!');
-});
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            const currentPassword = document.getElementById('currentPassword').value;
+
+            // Validate passwords if trying to change them
+            if (newPassword || confirmNewPassword) {
+                if (!currentPassword) {
+                    alert('Please enter your current password to change it');
+                    return;
+                }
+                if (newPassword !== confirmNewPassword) {
+                    alert('New passwords do not match');
+                    return;
+                }
+            }
+
+            // Get form data
+            const formData = {
+                nickname: document.getElementById('nickname').value,
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                email: document.getElementById('email').value,
+                currentPassword: currentPassword,
+                newPassword: newPassword
+            };
+
+            // Here you would typically send the data to a server
+            console.log('Profile update submitted:', formData);
+
+            // Show success message
+            alert('Profile updated successfully!');
+        });
     </script>
 </body>
+
 </html>
