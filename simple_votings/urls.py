@@ -27,5 +27,6 @@ urlpatterns = [
     path('posts/', main_posts, name='posts'),
     path('create/', create_post, name='create'),
     path('like/<int:post_id>/', like_post, name='like_post'),
-    path('comments/<int:post_id>', comments, name='comments')
+    path('comments/<int:post_id>', comments, name='comments'),
+    path('profile/', profile_view, name='profile')
 ]

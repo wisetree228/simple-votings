@@ -264,3 +264,18 @@ def comments(request, post_id):
         return redirect('comments', post_id=post_id)
 
     return render(request, 'comment.html', context=context)
+
+def profile_view(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+    context = {}
+    data_db = User.objects.get(username=request.user.username)
+    user = {
+        'id':data_db.id,
+        'username':data_db.username,
+        'name':data_db.name,
+        'surname':data_db.surname,
+        'email':data_db.email,
+        }
+    context['user'] = user
+    return render(request, 'profile.html', context=context)
