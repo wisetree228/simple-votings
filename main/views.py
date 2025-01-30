@@ -276,6 +276,10 @@ def profile_view(request):
         'name':data_db.name,
         'surname':data_db.surname,
         'email':data_db.email,
+        'registered_at':data_db.created_at,
         }
     context['user'] = user
     return render(request, 'profile.html', context=context)
+
+def option_voters(request, id: int):
+    pass
