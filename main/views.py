@@ -237,12 +237,14 @@ def comments(request, post_id):
             res.append({
                 'text': var.text,
                 'percent': round((Vote.objects.filter(variant=var).count() / count_of_votes) * 100),
+                'id':var.id,
             })
     else:
         for var in vars:
             res.append({
                 'text': var.text,
                 'percent': 0,
+                'id': var.id,
             })
     comms = []
     for comment in post.comments.all():
@@ -282,4 +284,21 @@ def profile_view(request):
     return render(request, 'profile.html', context=context)
 
 def option_voters(request, id: int):
-    pass
+    if not request.user.is_authenticated:
+        return redirect('index')
+    var_db = VotingVariant.objects.get(id=id)
+    post_id = var_db.post.id
+    context = {}
+    users = []
+    for vote in Vote.objects.filter(variant=var_db):
+        user = {
+            'username':vote.user.username,
+            'name': vote.user.name,
+            'surname': vote.user.surname,
+        }
+        users.append(user)
+    context['post_id'] = post_id
+    context['users'] = users
+    context['variant_text'] = var_db.text
+    return render(request, 'whovoted.html', context)
+

@@ -345,6 +345,18 @@ footer {
 .action-btn:hover {
     color: #fbbf24;
 }
+.whovoted{
+    text-decoration: none;
+    color: #fff;
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.whovoted:hover{
+    background-color: #d1d5db;
+    color: #302f2f;
+}
     </style>
 </head>
 <body>
@@ -388,6 +400,7 @@ footer {
                                 <div class="option-progress" style="width: {{var.percent}}%;"></div>
                                 <span class="option-percentage">{{var.percent}}%</span>
                             </div>
+                            <a href="{% url 'whovoted' id=var.id %}" class="whovoted">кто голосвал за этот вариант?</a>
                         </div>
                         {% endfor %}
 
