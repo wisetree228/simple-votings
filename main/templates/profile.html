@@ -253,6 +253,9 @@
         .form-footer a:hover {
             text-decoration: underline;
         }
+        h4{
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -339,6 +342,10 @@
                     <div class="form-actions">
                         <button type="button" class="btn secondary" onclick="window.history.back()">Cancel</button>
                         <button type="submit" class="btn primary">Save Changes</button>
+                    </div>
+
+                    <div class="form-group">
+                        <h4>Registered at: {{user.registered_at}}</h4>
                     </div>
                 </form>
             </div>
