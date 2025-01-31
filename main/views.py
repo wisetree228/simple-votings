@@ -115,22 +115,59 @@ def main_posts(request):
         HttpResponse
     """
     if not request.user.is_authenticated:
-       return redirect(index)
+        return redirect(index)
+
     context = {}
+    form = SearchForm()
     posts_from_db = Post.objects.all()
     posts = []
-    form = SearchForm()
-    votes = Post.objects.all()
-    if request.method == 'GET':
-        if 'query' in request.GET:
-            form = SearchForm(request.GET)
-            if form.is_valid():
-                query = form.cleaned_data['query']
-                votes = votes.filter(text__icontains=query)
-    context['que'] = form
-    context['posts'] = votes
+    if 'que' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            posts_from_db = posts_from_db.filter(text__icontains=query)
+    for post_db in posts_from_db:
+        variants = []
+        vars_db = post_db.variants.all()
+        for var in vars_db:
+            variants.append(
+                {
+                    'text': var.text,
+                    'id': var.id,
+                }
+            )
+        post = {
+            'id': post_db.id,
+            'author': post_db.author.username,
+            'text': post_db.text,
+            'variants': variants,
+            'created_at': post_db.created_at,
+            'likes_count': Like.objects.filter(post=post_db).count(),
+            'comments_count': Comment.objects.filter(post=post_db).count(),
+        }
+        posts.append(post)
+    context['form'] = form
+    context['posts'] = posts
     context['user_liked_posts'] = Like.objects.filter(
         user=User.objects.get(username=request.user.username)).values_list('post_id', flat=True)
+
+    if request.method == 'POST':
+        selected_vote = request.POST.get('vote')
+        vote_list = selected_vote.split('!!!')
+        variant = VotingVariant.objects.get(id=int(vote_list[0]))
+        user = User.objects.get(username=request.user.username)
+        post = Post.objects.get(id=int(vote_list[1]))
+        if VotingVariant.objects.filter(post=post).exists():
+            # проверяем, голосовал ли пользователь в этом посте, если да то предыдущий голос удаляем
+            for var in post.variants.all():
+                if Vote.objects.filter(variant=var, user=user).exists():
+                    vote = Vote.objects.get(variant=var, user=user)
+                    vote.delete()
+            vote = Vote(user=user, variant=variant)
+            vote.save()
+
+    return render(request, 'posts.html', context=context)
+
 
     if request.method == 'POST':
         selected_vote = request.POST.get('vote')
