@@ -227,6 +227,8 @@ def comments(request, post_id):
         return redirect('posts')
     post = Post.objects.get(id=post_id)
     context = {}
+    context['user_liked_posts'] = Like.objects.filter(
+        user=User.objects.get(username=request.user.username)).values_list('post_id', flat=True)
     res = []
     count_of_votes = 0
     vars = post.variants.all()
@@ -302,3 +304,95 @@ def option_voters(request, id: int):
     context['variant_text'] = var_db.text
     return render(request, 'whovoted.html', context)
 
+def liked(request):
+    posts_db = []
+    context = {}
+    posts = []
+    user = User.objects.get(username=request.user.username)
+    context['user_liked_posts'] = Like.objects.filter(
+        user=User.objects.get(username=request.user.username)).values_list('post_id', flat=True)
+    for like in user.reactions.all():
+        posts_db.append(like.post)
+    for post_db in posts_db:
+        variants = []
+        vars_db = post_db.variants.all()
+        for var in vars_db:
+            variants.append(
+                {
+                    'text': var.text,
+                    'id': var.id,
+                }
+            )
+        post = {
+            'id': post_db.id,
+            'author': post_db.author.username,
+            'text': post_db.text,
+            'variants': variants,
+            'created_at': post_db.created_at,
+            'likes_count': Like.objects.filter(post=post_db).count(),
+            'comments_count': Comment.objects.filter(post=post_db).count(),
+        }
+        posts.append(post)
+    context['posts'] = posts
+    if request.method == 'POST':
+        selected_vote = request.POST.get('vote')
+        vote_list = selected_vote.split('!!!')
+        variant = VotingVariant.objects.get(id=int(vote_list[0]))
+        user = User.objects.get(username=request.user.username)
+        post = Post.objects.get(id=int(vote_list[1]))
+        if VotingVariant.objects.filter(post=post).exists():
+            # проверяем, голосовал ли пользователь в этом посте, если да то предыдущий голос удаляем
+            for var in post.variants.all():
+                if Vote.objects.filter(variant=var, user=user).exists():
+                    vote = Vote.objects.get(variant=var, user=user)
+                    vote.delete()
+            vote = Vote(user=user, variant=variant)
+            vote.save()
+
+    return render(request, 'liked.html', context)
+
+
+def my_posts(request):
+    posts_db = []
+    context = {}
+    posts = []
+    user = User.objects.get(username=request.user.username)
+    context['user_liked_posts'] = Like.objects.filter(
+        user=User.objects.get(username=request.user.username)).values_list('post_id', flat=True)
+    for post_db in user.posts.all():
+        variants = []
+        vars_db = post_db.variants.all()
+        for var in vars_db:
+            variants.append(
+                {
+                    'text': var.text,
+                    'id': var.id,
+                }
+            )
+        post = {
+            'id': post_db.id,
+            'author': post_db.author.username,
+            'text': post_db.text,
+            'variants': variants,
+            'created_at': post_db.created_at,
+            'likes_count': Like.objects.filter(post=post_db).count(),
+            'comments_count': Comment.objects.filter(post=post_db).count(),
+        }
+        posts.append(post)
+    context['posts'] = posts
+    if request.method == 'POST':
+        selected_vote = request.POST.get('vote')
+        vote_list = selected_vote.split('!!!')
+        variant = VotingVariant.objects.get(id=int(vote_list[0]))
+        user = User.objects.get(username=request.user.username)
+        post = Post.objects.get(id=int(vote_list[1]))
+        if VotingVariant.objects.filter(post=post).exists():
+            # проверяем, голосовал ли пользователь в этом посте, если да то предыдущий голос удаляем
+            for var in post.variants.all():
+                if Vote.objects.filter(variant=var, user=user).exists():
+                    vote = Vote.objects.get(variant=var, user=user)
+                    vote.delete()
+            vote = Vote(user=user, variant=variant)
+            vote.save()
+
+    return render(request, 'myvotings.html', context)

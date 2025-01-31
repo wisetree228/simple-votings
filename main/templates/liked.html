@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SimpleVotes - Liked Votings</title>
- <style>
+    <style>
         * {
     margin: 0;
     padding: 0;
@@ -106,22 +106,8 @@ footer {
     text-align: center;
     color: #9ca3af;
 }
-        /* Layout */
-.posts-layout {
-    display: flex;
-    gap: 2rem;
-    padding: 2rem;
-    flex-grow: 1;
-    max-width: 1400px;
-    margin: 0 auto;
-    width: 100%;
-}
 
-/* Sidebar */
-.sidebar {
-    width: 250px;
-    flex-shrink: 0;
-}
+
 
 .create-voting-btn {
     width: 100%;
@@ -164,11 +150,7 @@ footer {
     color: #fbbf24;
 }
 
-/* Main Content */
-.main-content {
-    flex-grow: 1;
-    max-width: 800px;
-}
+
 
 /* Search */
 .search-container {
@@ -297,6 +279,47 @@ footer {
 .profile-btn:hover {
     background-color: #374151;
 }
+.post-date {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    margin-left: auto; /* Чтобы дата была справа */
+}
+.action-btn.like-btn.liked svg {
+    fill: red; /* Закрашиваем сердечко красным */
+    stroke: red; /* Меняем цвет обводки на красный */
+}
+
+.action-btn.like-btn.liked .like-count {
+    color: red; /* Меняем цвет счётчика лайков на красный */
+}
+
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 1rem; /* Отступ от верхнего края экрана */
+    align-self: flex-start; /* Чтобы sidebar не растягивался по высоте */
+    height: 100vh; /* Высота sidebar равна высоте экрана */
+    overflow-y: auto; /* Добавляем прокрутку, если контент не помещается */
+}
+
+.posts-layout {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    flex-grow: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: flex-start; /* Выравниваем элементы по верхнему краю */
+    justify-content: center; /* Центрируем основной контент */
+}
+
+.main-content {
+    flex-grow: 1;
+    max-width: 800px;
+    margin-left: 2rem; /* Небольшой отступ слева */
+}
     </style>
 </head>
 <body>
@@ -324,7 +347,7 @@ footer {
 
         <main class="posts-layout">
             <aside class="sidebar">
-                <button class="btn primary create-voting-btn">
+                <button class="btn primary create-voting-btn" onclick="window.location.href='{% url 'create' %}'">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 5v14"></path>
                         <path d="M5 12h14"></path>
@@ -332,14 +355,14 @@ footer {
                     Create Voting
                 </button>
                 <nav class="sidebar-nav">
-                    <button class="nav-btn" onclick="window.location.href='posts.html'">
+                    <button class="nav-btn" onclick="window.location.href='{% url 'posts' %}'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                             <polyline points="9 22 9 12 15 12 15 22"></polyline>
                         </svg>
                         All Votings
                     </button>
-                    <button class="nav-btn">
+                    <button class="nav-btn" onclick="window.location.href='{% url 'my_votings' %}'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
@@ -364,9 +387,62 @@ footer {
                     <input type="text" id="searchInput" placeholder="Search liked votings...">
                 </div>
 
+                {% for post in posts %}
+
                 <div class="posts-container" id="postsContainer">
-                    <!-- Liked posts will be dynamically inserted here -->
-                </div>
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-author">{{ post.author }}</span>
+                            <span class="post-date">{{ post.created_at }}</span>
+                        </div>
+                        <div class="post-title">{{ post.text }}</div>
+                        <div class="post-content">
+                            <p>Выберите один из предложенных вариантов:</p>
+                            <form class="voting-form" method="post">
+                                {% csrf_token %}
+                                <div class="voting-options">
+
+                                    {% for var in post.variants %}
+                                    <label class="voting-option">
+                                        <input type="radio" name="vote" value="{{var.id}}!!!{{post.id}}">
+                                        {{ var.text }}
+                                    </label>
+                                    
+                                    {% endfor %}
+
+                                </div>
+                                <button type="submit" class="btn primary">Проголосовать</button>
+                            </form>
+                        </div>
+                        <div class="post-actions">
+                            
+                            <button class="action-btn like-btn {% if post.id in user_liked_posts %}liked{% endif %}" data-post-id="{{ post.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                <span class="like-count">{{ post.likes_count }}</span>
+                            </button>
+
+                            <button class="action-btn" onclick="window.location.href='{% url 'comments' post_id=post.id %}'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span>{{post.comments_count}}</span>
+                            </button>
+                            <button class="action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                    <polyline points="16 6 12 2 8 6"></polyline>
+                                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Поделиться</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+
             </div>
         </main>
 
@@ -379,44 +455,67 @@ footer {
 document.getElementById('year').textContent = new Date().getFullYear();
 
 // Add navigation to My Votings
-document.querySelector('.nav-btn:nth-child(2)').addEventListener('click', () => {
-    window.location.href = 'myvotings.html';
-});
 
-// Add profile button navigation
-document.querySelector('.profile-btn').addEventListener('click', () => {
-    window.location.href = 'profile.html';
-});
-
-// Add create voting button navigation
-document.querySelector('.create-voting-btn').addEventListener('click', () => {
-    window.location.href = 'create.html';
-});
 
 // Mock data for demonstration - in a real app, this would come from a database
-const mockLikedPosts = [
-    {
-        id: 1,
-        author: 'John Doe',
-        title: 'What is your favorite programming language?',
-        options: [
-            { text: 'JavaScript', votes: 42 },
-            { text: 'Python', votes: 35 },
-            { text: 'Java', votes: 28 },
-            { text: 'C++', votes: 15 }
-        ],
-        likes: 42,
-        dislikes: 5,
-        comments: [
-            {
-                id: 1,
-                author: 'Alice Smith',
-                content: 'JavaScript all the way! The ecosystem is unmatched.',
-                date: '2024-03-15T10:30:00'
-            }
-        ]
-    }
-];
+// const mockLikedPosts = [
+//     {
+//         id: 1,
+//         author: 'John Doe',
+//         title: 'What is your favorite programming language?',
+//         options: [
+//             { text: 'JavaScript', votes: 42 },
+//             { text: 'Python', votes: 35 },
+//             { text: 'Java', votes: 28 },
+//             { text: 'C++', votes: 15 }
+//         ],
+//         likes: 42,
+//         dislikes: 5,
+//         comments: [
+//             {
+//                 id: 1,
+//                 author: 'Alice Smith',
+//                 content: 'JavaScript all the way! The ecosystem is unmatched.',
+//                 date: '2024-03-15T10:30:00'
+//             }
+//         ]
+//     }
+// ];
+document.addEventListener('DOMContentLoaded', function() {
+    const likeButtons = document.querySelectorAll('.action-btn.like-btn');
+
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const postId = this.dataset.postId;
+            const url = `/like/${postId}/`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',  // Добавьте CSRF-токен для защиты
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'liked' || data.status === 'unliked') {
+                    const likeCountElement = this.querySelector('.like-count');
+                    likeCountElement.textContent = data.likes_count;
+
+                    // Добавляем или удаляем класс 'liked' в зависимости от статуса
+                    if (data.status === 'liked') {
+                        this.classList.add('liked');
+                    } else {
+                        this.classList.remove('liked');
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
     </script>
 </body>
 </html>
