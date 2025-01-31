@@ -320,6 +320,9 @@ footer {
     max-width: 800px;
     margin-left: 2rem; /* Небольшой отступ слева */
 }
+.logout{
+            background-color: #ff6427;
+        }
     </style>
 </head>
 <body>
@@ -335,12 +338,13 @@ footer {
                     <span class="header-title">SimpleVotes</span>
                 </div>
                 <div class="header-right">
-                    <button class="profile-btn">
+                    <button class="profile-btn" onclick="window.location.href='{% url 'profile' %}'">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
                     </button>
+                    <button type="button" class="btn secondary logout" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
                 </div>
             </div>
         </header>
