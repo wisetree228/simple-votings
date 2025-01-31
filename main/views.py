@@ -115,32 +115,20 @@ def main_posts(request):
         HttpResponse
     """
     if not request.user.is_authenticated:
-        return redirect(index)
-
+       return redirect(index)
     context = {}
     posts_from_db = Post.objects.all()
     posts = []
-    for post_db in posts_from_db:
-        variants = []
-        vars_db = post_db.variants.all()
-        for var in vars_db:
-            variants.append(
-                {
-                    'text': var.text,
-                    'id': var.id,
-                }
-            )
-        post = {
-            'id': post_db.id,
-            'author': post_db.author.username,
-            'text': post_db.text,
-            'variants': variants,
-            'created_at': post_db.created_at,
-            'likes_count': Like.objects.filter(post=post_db).count(),
-            'comments_count': Comment.objects.filter(post=post_db).count(),
-        }
-        posts.append(post)
-    context['posts'] = posts
+    form = SearchForm()
+    votes = Post.objects.all()
+    if request.method == 'GET':
+        if 'query' in request.GET:
+            form = SearchForm(request.GET)
+            if form.is_valid():
+                query = form.cleaned_data['query']
+                votes = votes.filter(text__icontains=query)
+    context['que'] = form
+    context['posts'] = votes
     context['user_liked_posts'] = Like.objects.filter(
         user=User.objects.get(username=request.user.username)).values_list('post_id', flat=True)
 

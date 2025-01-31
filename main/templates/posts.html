@@ -385,7 +385,10 @@ footer {
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.3-4.3"></path>
                     </svg>
-                    <input type="text" id="searchInput" placeholder="Search votings...">
+                            <form method="get">
+                                {{ que.as_p }}
+                                <button type="submit">Поиск</button>
+                            </form>
                 </div>
 
 
