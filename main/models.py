@@ -71,3 +71,4 @@ class ComplaintAboutComment(models.Model):
 class Like(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reactions')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='reactions')
+

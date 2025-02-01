@@ -253,6 +253,9 @@
         .form-footer a:hover {
             text-decoration: underline;
         }
+        h4{
+            margin-top: 10px;
+        }
     </style>
 </head>
 
@@ -340,6 +343,10 @@
                         <button type="button" class="btn secondary" onclick="window.history.back()">Cancel</button>
                         <button type="submit" class="btn primary">Save Changes</button>
                     </div>
+
+                    <div class="form-group">
+                        <h4>Registered at: {{user.registered_at}}</h4>
+                    </div>
                 </form>
             </div>
         </main>
@@ -353,13 +360,16 @@
         document.getElementById('year').textContent = new Date().getFullYear();
 
         // Mock user data - in a real app, this would come from a database
+
         const mockUser = {
-            nickname: 'johndoe',
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'john.doe@example.com',
-            avatar: 'https://ui-avatars.com/api/?name=John+Doe&background=random'
+            nickname: '{{user.username}}',
+            firstName: '{{user.name}}',
+            lastName: '{{user.surname}}',
+            email: '{{user.email}}',
+            avatar: 'https://ui-avatars.com/api/?name={{user.name}}+{{user.surname}}&background=random'
         };
+
+
 
         // Populate form with user data
         document.addEventListener('DOMContentLoaded', () => {
