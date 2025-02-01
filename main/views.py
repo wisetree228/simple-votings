@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-
+from main.log import logger
 
 # Create your views here.
 def login(request):
@@ -32,6 +32,7 @@ def login(request):
                 username = User.objects.get(email=email).username
                 user = authenticate(request, username=username, password=password)
                 if user:
+                    logger.info(f"Пользователь {username} вошёл в аккаунт")
                     auth_login(request, user)
                     return redirect(main_posts)
                 else:
@@ -70,6 +71,7 @@ def register(request):
                 user.save()
                 user = authenticate(username=username, password=password)
                 if user:
+                    logger.info(f"Пользователь {username} зарегистрировался")
                     auth_login(request, user)
                     return redirect(main_posts)
             else:
