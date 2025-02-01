@@ -256,6 +256,9 @@
         h4{
             margin-top: 10px;
         }
+        .logout{
+            background-color: #ff6427;
+        }
     </style>
 </head>
 
@@ -348,6 +351,7 @@
                         <h4>Registered at: {{user.registered_at}}</h4>
                     </div>
                 </form>
+                <button type="button" class="btn secondary logout" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
             </div>
         </main>
 
