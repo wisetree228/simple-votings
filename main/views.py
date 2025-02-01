@@ -36,6 +36,7 @@ def login(request):
                 username = User.objects.get(email=email).username
                 user = authenticate(request, username=username, password=password)
                 if user:
+                    logger.info(f"Пользователь {username} вошёл в аккаунт")
                     auth_login(request, user)
                     return redirect(main_posts)
                 else:
@@ -74,6 +75,7 @@ def register(request):
                 user.save()
                 user = authenticate(username=username, password=password)
                 if user:
+                    logger.info(f"Пользователь {username} зарегистрировался")
                     auth_login(request, user)
                     return redirect(main_posts)
             else:

@@ -1,10 +1,10 @@
 import logging
+
 logging.basicConfig(
-    format = "[%(asctime)s]::%(levelname)s:%(filename)s:%(message)s",
-    level=logging.INFO,
-    filename = 'log.log',
-    filemode = 'a'
+    filename='log.log',
+    filemode='a',
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    level=logging.DEBUG
 )
 
-# Create a logger instance
-logger = logging.getLogger('main_logger')
+logger = logging.getLogger()
