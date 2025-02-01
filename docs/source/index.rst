@@ -8,3 +8,4 @@
    :caption: Contents:
 
    views_reference
+   models_reference
