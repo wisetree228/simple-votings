@@ -41,3 +41,5 @@ class SignInForm(forms.Form):
     }),
     label='Password', max_length=255
     )
+class SearchForm(forms.Form):
+    search = forms.CharField(label='Search', max_length=20000)
