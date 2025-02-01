@@ -7,8 +7,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-
-
+from main.log import logger
 # Create your views here.
 def login(request):
     """
@@ -20,11 +19,16 @@ def login(request):
     Returns:
         HttpResponse
     """
+    logger.info("запущена программа логина")
     form = SignInForm()
     context = {}
     context['form'] = form
     if request.method == 'POST':
-        form = SignInForm(request.POST)
+        try:
+            form = SignInForm(request.POST)
+            logger.info("Форма сгенерирована в штатном режиме")
+        except:
+            logger.error('Ошибка в генерации формы')
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
@@ -92,6 +96,7 @@ def logout_view(request):
     logout(request)
     return redirect('index')
 
+
 def index(request):
     """
     Начальная страница, предоставляет выбор между регистрацией и авторизацией
@@ -117,13 +122,13 @@ def main_posts(request):
         return redirect(index)
 
     context = {}
-    form = SearchForm()
     posts_from_db = Post.objects.all()
     posts = []
-    if 'que' in request.GET:
+    form = SearchForm()
+    if 'search' in request.GET:
         form = SearchForm(request.GET)
         if form.is_valid():
-            query = form.cleaned_data['query']
+            query = form.cleaned_data['search']
             posts_from_db = posts_from_db.filter(text__icontains=query)
     for post_db in posts_from_db:
         variants = []
@@ -145,28 +150,10 @@ def main_posts(request):
             'comments_count': Comment.objects.filter(post=post_db).count(),
         }
         posts.append(post)
-    context['form'] = form
     context['posts'] = posts
+    context['form'] = form
     context['user_liked_posts'] = Like.objects.filter(
         user=User.objects.get(username=request.user.username)).values_list('post_id', flat=True)
-
-    if request.method == 'POST':
-        selected_vote = request.POST.get('vote')
-        vote_list = selected_vote.split('!!!')
-        variant = VotingVariant.objects.get(id=int(vote_list[0]))
-        user = User.objects.get(username=request.user.username)
-        post = Post.objects.get(id=int(vote_list[1]))
-        if VotingVariant.objects.filter(post=post).exists():
-            # проверяем, голосовал ли пользователь в этом посте, если да то предыдущий голос удаляем
-            for var in post.variants.all():
-                if Vote.objects.filter(variant=var, user=user).exists():
-                    vote = Vote.objects.get(variant=var, user=user)
-                    vote.delete()
-            vote = Vote(user=user, variant=variant)
-            vote.save()
-
-    return render(request, 'posts.html', context=context)
-
 
     if request.method == 'POST':
         selected_vote = request.POST.get('vote')
@@ -337,6 +324,13 @@ def liked(request):
         user=User.objects.get(username=request.user.username)).values_list('post_id', flat=True)
     for like in user.reactions.all():
         posts_db.append(like.post)
+    form = SearchForm()
+    if 'search' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['search']
+            posts_from_db = posts_db.filter(text__icontains=query)
+    context['form'] = form
     for post_db in posts_db:
         variants = []
         vars_db = post_db.variants.all()
@@ -383,7 +377,15 @@ def my_posts(request):
     user = User.objects.get(username=request.user.username)
     context['user_liked_posts'] = Like.objects.filter(
         user=User.objects.get(username=request.user.username)).values_list('post_id', flat=True)
-    for post_db in user.posts.all():
+    form = SearchForm()
+    user_posts = user.posts.all()
+    if 'search' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['search']
+            user_posts = user_posts.filter(text__icontains=query)
+    context['form'] = form
+    for post_db in user_posts:
         variants = []
         vars_db = post_db.variants.all()
         for var in vars_db:

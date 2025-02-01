@@ -324,6 +324,44 @@ footer {
 .logout{
             background-color: #ff6427;
         }
+                .search-button {
+    width: 100px;
+    padding: 10px;
+    margin-left: 0px;
+    background-color: #fbbf24; /* Blue background */
+    color: #000; /* White text */
+    border: none;
+    border-radius: 4px; /* Slightly rounded corners */
+    font-size: 16px;
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+.search-form {
+    display: flex;
+    align-items: center;
+}
+.search-container {
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    background-color: #000; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.searchInput input[type="text"] {
+    width: calc(100% - 120px); /* Full width minus button width */
+    padding: 10px;
+    border: 1px solid #ddd; /* Light grey border */
+    border-radius: 4px; /* Slightly rounded corners */
+    font-size: 16px;
+    outline: none; /* Remove default focus outline */
+}
+
+.searchInput input[type="text"]:focus {
+    border-color: #fbbf24; /* Blue border on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle glow effect */
+}
     </style>
 </head>
 <body>
@@ -385,13 +423,13 @@ footer {
 
             <div class="main-content">
                 <div class="search-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.3-4.3"></path>
-                    </svg>
-                    <input type="text" id="searchInput" placeholder="Search my votings...">
+                    <div class="searchInput">
+                        <form method="GET">
+                            {{ form.as_p }}
+                            <button type="submit", class = 'search-button'>Search</button>
+                    </form>
+                    </div>
                 </div>
-
 
                 {% for post in posts %}
 
