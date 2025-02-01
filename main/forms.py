@@ -23,7 +23,7 @@ class RegisterForm(forms.Form):
         'placeholder': 'input email'
     }),
         label='Email', max_length=255)
-    password = forms.CharField(widget=forms.TextInput(attrs={
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
         'class': "form-group",
         'placeholder': 'input password'
     }),
@@ -38,8 +38,8 @@ class SignInForm(forms.Form):
         }),
         label='Email', max_length=255
     )
-    password = forms.CharField(widget=forms.TextInput(attrs={
-        'class': "form-group",
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': "form-group form-group-password",
         'placeholder': 'input password'
     }),
         label='Password', max_length=255
