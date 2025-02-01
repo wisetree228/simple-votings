@@ -306,9 +306,10 @@
                     </div>
                 </div>
 
-                <form id="profileForm">
+                <form id="profileForm" method="post">
+                    {% csrf_token %}
                     <div class="form-group">
-                        <input type="text" id="nickname" name="nickname" required>
+                        <input type="text" id="nickname" name="username" required>
                         <label for="nickname">Username</label>
                     </div>
 
@@ -327,20 +328,14 @@
                         <label for="email">Email</label>
                     </div>
 
-                    <div class="form-group">
-                        <input type="password" id="currentPassword" name="currentPassword">
-                        <label for="currentPassword">Current Password</label>
-                    </div>
+
 
                     <div class="form-group">
                         <input type="password" id="newPassword" name="newPassword">
                         <label for="newPassword">New Password</label>
                     </div>
 
-                    <div class="form-group">
-                        <input type="password" id="confirmNewPassword" name="confirmNewPassword">
-                        <label for="confirmNewPassword">Confirm New Password</label>
-                    </div>
+
 
                     <div class="form-actions">
                         <button type="button" class="btn secondary" onclick="window.history.back()">Cancel</button>
@@ -408,41 +403,7 @@
         });
 
         // Handle form submission
-        document.getElementById('profileForm').addEventListener('submit', function (e) {
-            e.preventDefault();
 
-            const newPassword = document.getElementById('newPassword').value;
-            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
-            const currentPassword = document.getElementById('currentPassword').value;
-
-            // Validate passwords if trying to change them
-            if (newPassword || confirmNewPassword) {
-                if (!currentPassword) {
-                    alert('Please enter your current password to change it');
-                    return;
-                }
-                if (newPassword !== confirmNewPassword) {
-                    alert('New passwords do not match');
-                    return;
-                }
-            }
-
-            // Get form data
-            const formData = {
-                nickname: document.getElementById('nickname').value,
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                email: document.getElementById('email').value,
-                currentPassword: currentPassword,
-                newPassword: newPassword
-            };
-
-            // Here you would typically send the data to a server
-            console.log('Profile update submitted:', formData);
-
-            // Show success message
-            alert('Profile updated successfully!');
-        });
     </script>
 </body>
 

@@ -294,7 +294,22 @@ def profile_view(request):
         'registered_at':data_db.created_at,
         }
     context['user'] = user
+    if request.method == 'POST':
+        user = User.objects.get(username=request.user.username)
+        user.username = request.POST.get('username')
+        print(request.POST.get('username'))
+        user.name = request.POST.get('firstName')
+        user.surname = request.POST.get('lastName')
+        user.email = request.POST.get('email')
+        if request.POST.get('newPassword'):
+            user.set_password(request.POST.get('newPassword'))
+        user.save()
+        user = authenticate(request, username=request.user.username, password=request.POST.get('newPassword'))
+        if user:
+            auth_login(request, user)
+            return redirect('profile')
     return render(request, 'profile.html', context=context)
+
 
 def option_voters(request, id: int):
     if not request.user.is_authenticated:
