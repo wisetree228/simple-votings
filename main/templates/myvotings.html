@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleVotes - My Votings</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styles */
+header {
+    background-color: #1f2937;
+    padding: 1rem 1.5rem;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo {
+    color: #fbbf24;
+    width: 2rem;
+    height: 2rem;
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Main content styles */
+main {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .buttons {
+        flex-direction: row;
+    }
+}
+
+/* Button styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary {
+    background-color: #fbbf24;
+    color: black;
+}
+
+.primary:hover {
+    background-color: #f59e0b;
+}
+
+.secondary {
+    background-color: white;
+    color: black;
+}
+
+.secondary:hover {
+    background-color: #f3f4f6;
+}
+
+/* Footer styles */
+footer {
+    background-color: #1f2937;
+    padding: 1rem;
+    text-align: center;
+    color: #9ca3af;
+}
+
+
+
+.create-voting-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: none;
+    border: none;
+    color: #9ca3af;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+}
+
+.nav-btn:hover {
+    background-color: #374151;
+    color: white;
+}
+
+.nav-btn.active {
+    background-color: #374151;
+    color: #fbbf24;
+}
+
+
+
+/* Search */
+.search-container {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 3rem;
+    background-color: #1f2937;
+    border: 2px solid #374151;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 1rem;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #fbbf24;
+}
+
+/* Posts */
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.post {
+    background-color: #1f2937;
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.post-author {
+    color: #9ca3af;
+    font-size: 0.875rem;
+}
+
+.post-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.post-content {
+    margin-bottom: 1.5rem;
+}
+
+.voting-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.voting-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.voting-option input[type="radio"] {
+    accent-color: #fbbf24;
+}
+
+.voting-option label {
+    color: #e5e7eb;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #374151;
+}
+
+.action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: color 0.2s;
+    font-size: 0.875rem;
+}
+
+.action-btn:hover {
+    color: #fbbf24;
+}
+
+/* Header Profile Button */
+.header-content {
+    justify-content: space-between;
+}
+
+.profile-btn {
+    background: none;
+    border: none;
+    color: #fbbf24;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.profile-btn:hover {
+    background-color: #374151;
+}
+.post-date {
+    color: #9ca3af;
+    font-size: 0.875rem;
+    margin-left: auto; /* Чтобы дата была справа */
+}
+.action-btn.like-btn.liked svg {
+    fill: red; /* Закрашиваем сердечко красным */
+    stroke: red; /* Меняем цвет обводки на красный */
+}
+
+.action-btn.like-btn.liked .like-count {
+    color: red; /* Меняем цвет счётчика лайков на красный */
+}
+
+.sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 1rem; /* Отступ от верхнего края экрана */
+    align-self: flex-start; /* Чтобы sidebar не растягивался по высоте */
+    height: 100vh; /* Высота sidebar равна высоте экрана */
+    overflow-y: auto; /* Добавляем прокрутку, если контент не помещается */
+}
+
+.posts-layout {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    flex-grow: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+    align-items: flex-start; /* Выравниваем элементы по верхнему краю */
+    justify-content: center; /* Центрируем основной контент */
+}
+
+.main-content {
+    flex-grow: 1;
+    max-width: 800px;
+    margin-left: 2rem; /* Небольшой отступ слева */
+}
+
+.logout{
+            background-color: #ff6427;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo">
+                        <path d="m9 12 2 2 4-4"></path>
+                        <path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path>
+                        <path d="M22 19H2"></path>
+                    </svg>
+                    <span class="header-title">SimpleVotes</span>
+                </div>
+                <div class="header-right">
+                    <button class="profile-btn" onclick="window.location.href='{% url 'profile' %}'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </button>
+                    <button type="button" class="btn secondary logout" onclick="window.location.href='{% url 'logout' %}'">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <main class="posts-layout">
+            <aside class="sidebar">
+                <button class="btn primary create-voting-btn" onclick="window.location.href='{% url 'create' %}'">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 5v14"></path>
+                        <path d="M5 12h14"></path>
+                    </svg>
+                    Create Voting
+                </button>
+                <nav class="sidebar-nav">
+                    <button class="nav-btn" onclick="window.location.href='{% url 'posts' %}'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        All Votings
+                    </button>
+                    <button class="nav-btn active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        My Votings
+                    </button>
+                    <button class="nav-btn" onclick="window.location.href='{% url 'liked' %}'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+                        </svg>
+                        Liked Votings
+                    </button>
+                </nav>
+            </aside>
+
+            <div class="main-content">
+                <div class="search-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search my votings...">
+                </div>
+
+                
+                {% for post in posts %}
+
+                <div class="posts-container" id="postsContainer">
+                    <div class="post">
+                        <div class="post-header">
+                            <span class="post-author">{{ post.author }}</span>
+                            <span class="post-date">{{ post.created_at }}</span>
+                        </div>
+                        <div class="post-title">{{ post.text }}</div>
+                        <div class="post-content">
+                            <p>Выберите один из предложенных вариантов:</p>
+                            <form class="voting-form" method="post">
+                                {% csrf_token %}
+                                <div class="voting-options">
+
+                                    {% for var in post.variants %}
+                                    <label class="voting-option">
+                                        <input type="radio" name="vote" value="{{var.id}}!!!{{post.id}}">
+                                        {{ var.text }}
+                                    </label>
+                                    
+                                    {% endfor %}
+
+                                </div>
+                                <button type="submit" class="btn primary">Проголосовать</button>
+                            </form>
+                        </div>
+                        <div class="post-actions">
+                            
+                            <button class="action-btn like-btn {% if post.id in user_liked_posts %}liked{% endif %}" data-post-id="{{ post.id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                <span class="like-count">{{ post.likes_count }}</span>
+                            </button>
+
+                            <button class="action-btn" onclick="window.location.href='{% url 'comments' post_id=post.id %}'">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span>{{post.comments_count}}</span>
+                            </button>
+                            <button class="action-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                                    <polyline points="16 6 12 2 8 6"></polyline>
+                                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                                </svg>
+                                <span>Поделиться</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; <span id="year"></span> SimpleVotes. All rights reserved.</p>
+        </footer>
+    </div>
+    <script>
+        // Set current year in footer
+document.getElementById('year').textContent = new Date().getFullYear();
+
+
+
+
+
+
+
+// Mock data for demonstration - in a real app, this would come from a database
+// const mockLikedPosts = [
+//     {
+//         id: 1,
+//         author: 'John Doe',
+//         title: 'What is your favorite programming language?',
+//         options: [
+//             { text: 'JavaScript', votes: 42 },
+//             { text: 'Python', votes: 35 },
+//             { text: 'Java', votes: 28 },
+//             { text: 'C++', votes: 15 }
+//         ],
+//         likes: 42,
+//         dislikes: 5,
+//         comments: [
+//             {
+//                 id: 1,
+//                 author: 'Alice Smith',
+//                 content: 'JavaScript all the way! The ecosystem is unmatched.',
+//                 date: '2024-03-15T10:30:00'
+//             }
+//         ]
+//     }
+// ];
+document.addEventListener('DOMContentLoaded', function() {
+    const likeButtons = document.querySelectorAll('.action-btn.like-btn');
+
+    likeButtons.forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+            const postId = this.dataset.postId;
+            const url = `/like/${postId}/`;
+
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',  // Добавьте CSRF-токен для защиты
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'liked' || data.status === 'unliked') {
+                    const likeCountElement = this.querySelector('.like-count');
+                    likeCountElement.textContent = data.likes_count;
+
+                    // Добавляем или удаляем класс 'liked' в зависимости от статуса
+                    if (data.status === 'liked') {
+                        this.classList.add('liked');
+                    } else {
+                        this.classList.remove('liked');
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});
+    </script>
+</body>
+</html>

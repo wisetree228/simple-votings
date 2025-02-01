@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /* Form styles */
+.form-container {
+    background-color: #1f2937;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #374151;
+    border-radius: 0.5rem;
+    background-color: #374151;
+    color: white;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #fbbf24;
+}
+
+.form-group label {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    font-size: 1rem;
+}
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+    top: 0;
+    transform: translateY(-100%);
+    font-size: 0.875rem;
+    color: #fbbf24;
+}
+
+.form-container .btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #9ca3af;
+}
+
+.form-footer a {
+    color: #fbbf24;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: black;
+    color: white;
+    min-height: 100vh;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header styles */
+header {
+    background-color: #1f2937;
+    padding: 1rem 1.5rem;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo {
+    color: #fbbf24;
+    width: 2rem;
+    height: 2rem;
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Main content styles */
+main {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+@media (min-width: 640px) {
+    .buttons {
+        flex-direction: row;
+    }
+}
+
+/* Button styles */
+.btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1.125rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.primary {
+    background-color: #fbbf24;
+    color: black;
+}
+
+.primary:hover {
+    background-color: #f59e0b;
+}
+
+.secondary {
+    background-color: white;
+    color: black;
+}
+
+.secondary:hover {
+    background-color: #f3f4f6;
+}
+
+/* Footer styles */
+footer {
+    background-color: #1f2937;
+    padding: 1rem;
+    text-align: center;
+    color: #9ca3af;
+}
+        .messages{
+          color: red;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleVotes - Login</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="logo">
+                    <path d="m9 12 2 2 4-4"></path>
+                    <path d="M5 7c0-1.1.9-2 2-2h10a2 2 0 0 1 2 2v12H5V7Z"></path>
+                    <path d="M22 19H2"></path>
+                </svg>
+                <span class="header-title">SimpleVotes</span>
+            </div>
+        </header>
+
+        <main>
+            <form id="loginForm" class="form-container" method="post">
+                {% csrf_token %}
+                <h2>Sign In</h2>
+                
+                <div class="form-group">
+                    {{ form.email }}
+<!--                    <input type="email" id="email" name="email" required>-->
+<!--                    <label for="email">Email</label>-->
+                </div>
+
+                <div class="form-group">
+                    {{ form.password }}
+<!--                    <input type="password" id="password" name="password" required>-->
+<!--                    <label for="password">Password</label>-->
+                </div>
+                {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+                <button type="submit" class="btn primary">Sign In</button>
+
+                <p class="form-footer">
+                    Don't have an account? <a href="{% url 'register' %}">Register</a>
+                </p>
+
+            </form>
+        </main>
+
+        <footer>
+            <p>&copy; <span id="year"></span> SimpleVotes. All rights reserved.</p>
+        </footer>
+    </div>
+<!--    <script>-->
+<!--        // Set current year in footer-->
+<!--document.getElementById('year').textContent = new Date().getFullYear();-->
+
+<!--// Handle form submission-->
+<!--document.getElementById('loginForm').addEventListener('submit', function(e) {-->
+<!--    e.preventDefault();-->
+
+<!--    // Get form values-->
+<!--    const email = document.getElementById('email').value;-->
+<!--    const password = document.getElementById('password').value;-->
+
+<!--    // Basic validation-->
+<!--    if (!email || !password) {-->
+<!--        alert('Please fill in all fields');-->
+<!--        return;-->
+<!--    }-->
+
+<!--    // Here you would typically validate credentials with a server-->
+<!--    console.log('Login form submitted:', { email });-->
+
+<!--    // Redirect to posts page after successful login-->
+<!--    window.location.href = 'posts.html';-->
+<!--});-->
+<!--    </script>-->
+</body>
+</html>
